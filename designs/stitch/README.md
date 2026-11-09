@@ -11,7 +11,7 @@ Pilihan pengguna: minimalis, retro custom, seluruh alur operasional, animasi leb
 - Kanvas krem `#F6F3EC`, panel `#FFFEFA`, charcoal `#292D2C`.
 - Aksi tembaga gelap `#914B2D`, sukses sage `#3E6655`.
 - DM Sans untuk data/formulir; Barlow Condensed untuk judul dan merek.
-- Revisi tipografi: font dasar ditetapkan melalui CSS atau kelas font body yang terdefinisi; fallback Arial/sans-serif. Ikon tetap Material Symbols. Tidak memakai font serif bawaan browser.
+- Revisi tipografi: font dasar ditetapkan melalui CSS atau kelas font body yang terdefinisi; fallback Arial/sans-serif. Referensi Stitch memakai Material Symbols, tetapi frontend terbaru memakai piktogram raster Canva sesuai permintaan pengguna.
 - Identitas melalui fotografi motor custom, material metal/kulit, tanda dua garis pada merek; bukan ornamen di setiap komponen.
 - Teks ringkas, satu aksi utama, rincian melalui tab/panel. Konfirmasi finansial dan validasi tetap jelas.
 

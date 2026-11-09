@@ -1,0 +1,4912 @@
+{
+  "generated_at_utc": "2026-11-08T13:24:29Z",
+  "status": "OPEN_FINDINGS",
+  "scope": "Local MySQL ERD databases and local read-only phpMyAdmin; no application API or production infrastructure",
+  "summary": {
+    "PASS": 526,
+    "FAIL": 0,
+    "WARN": 8,
+    "SKIP": 1
+  },
+  "total_cases": 535,
+  "category_summary": {
+    "server": {
+      "PASS": 18,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "accounts": {
+      "PASS": 28,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "privileges": {
+      "PASS": 88,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "tls": {
+      "PASS": 24,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "authentication": {
+      "PASS": 8,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "schema": {
+      "PASS": 2,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "constraints": {
+      "PASS": 60,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "input-bounds": {
+      "PASS": 104,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "ddl": {
+      "PASS": 36,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "transactions": {
+      "PASS": 4,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "concurrency": {
+      "PASS": 4,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "business-boundary": {
+      "PASS": 0,
+      "FAIL": 0,
+      "WARN": 7,
+      "SKIP": 0
+    },
+    "preservation": {
+      "PASS": 4,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "filesystem": {
+      "PASS": 22,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "secret-hygiene": {
+      "PASS": 7,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "supply-chain": {
+      "PASS": 8,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "php-hardening": {
+      "PASS": 1,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "http-boundary": {
+      "PASS": 38,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "http-auth": {
+      "PASS": 15,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "http-headers": {
+      "PASS": 4,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "http-csrf": {
+      "PASS": 1,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "backup": {
+      "PASS": 2,
+      "FAIL": 0,
+      "WARN": 1,
+      "SKIP": 0
+    },
+    "recovery": {
+      "PASS": 30,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "file-privileges": {
+      "PASS": 16,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 0
+    },
+    "network": {
+      "PASS": 2,
+      "FAIL": 0,
+      "WARN": 0,
+      "SKIP": 1
+    }
+  },
+  "sources": [
+    {
+      "file": "security-audit.json",
+      "run_id": "fiqnatue",
+      "date": "2026-11-08",
+      "sha256": "9ae557d43df0d191700841a56395d52e8ee2253a2ea9ff27db1e17fe05bc6e44"
+    },
+    {
+      "file": "security-surfaces.json",
+      "run_id": "zvbnbehy",
+      "date": "2026-11-08",
+      "sha256": "3ef32ac012555a1de913403d6d6a38c75f225a22556dfaee5370e170f839d3a4"
+    },
+    {
+      "file": "security-surfaces-retest.json",
+      "run_id": "ubzdmsot",
+      "date": "2026-11-08",
+      "sha256": "973465b0fc94eaed78e06e093388a90fd5e37742134d796cf0bfb1469ce548b4"
+    }
+  ],
+  "active_databases": [
+    {
+      "database": "garasi_hobby_servis",
+      "tables": [
+        "detail_servis",
+        "kendaraan",
+        "mekanik",
+        "nota_servis",
+        "pegawai",
+        "pelanggan",
+        "pembayaran"
+      ],
+      "table_count": 7,
+      "row_count": 0
+    },
+    {
+      "database": "garasi_hobby_showroom",
+      "tables": [
+        "motor",
+        "pegawai",
+        "pembayaran",
+        "pembeli",
+        "penjualan"
+      ],
+      "table_count": 5,
+      "row_count": 0
+    }
+  ],
+  "leftover_audit_schemas": 0,
+  "leftover_audit_sql_users": 0,
+  "findings": [
+    {
+      "id": "DBSEC-01",
+      "severity": "MEDIUM",
+      "before": "Application, backup and migration accounts retained privileges on the obsolete PRD database.",
+      "repair": "Removed legacy schema/table/column grants and scoped service accounts to the two ERD databases.",
+      "status": "FIXED"
+    },
+    {
+      "id": "DBSEC-02",
+      "severity": "MEDIUM",
+      "before": "phpMyAdmin viewer had no failed-login lock policy.",
+      "repair": "Configured five failed attempts, one-day account lock, TLS and five concurrent connections; persisted in setup code.",
+      "status": "FIXED"
+    },
+    {
+      "id": "DBSEC-03",
+      "severity": "MEDIUM",
+      "summary": "ERD-only schema does not validate financial arithmetic/sign/quantity.",
+      "evidence": [
+        "Negative service total accepted by ERD-only schema",
+        "Zero service quantity accepted",
+        "Negative sale price accepted by ERD-only schema",
+        "Sale total can differ from subtotal and discount"
+      ],
+      "remediation": "Add approved column CHECKs and backend validation/transaction rules after business review; keep the 7+5 table model unchanged.",
+      "status": "OPEN"
+    },
+    {
+      "id": "DBSEC-04",
+      "severity": "MEDIUM",
+      "summary": "A compromised application SQL credential can bypass session FK checks.",
+      "evidence": "Confirmed on a clone with the actual runtime principal, then rolled back.",
+      "remediation": "Keep SQL credentials in backend only; parameterize queries, forbid arbitrary SQL APIs, protect the OS and rotate credentials if exposed. Full mitigation requires a reviewed write API/stored-procedure privilege model.",
+      "status": "OPEN"
+    },
+    {
+      "id": "DBSEC-05",
+      "severity": "MEDIUM",
+      "summary": "Backup recovery works, but backups share the local disk and are not encrypted.",
+      "evidence": "SQL backups restored and compared successfully; ACL protection does not protect against disk theft or disk failure.",
+      "remediation": "Before real customer data: encrypt backups, keep a separate off-device copy, define retention/scheduling and repeat restore drills. Store encryption keys separately.",
+      "status": "OPEN"
+    },
+    {
+      "id": "DBSEC-06",
+      "severity": "LOW",
+      "before": "Configuration path suffixes, repeated slashes and Windows NTFS ADS bypassed the deny rule. The ADS alias served the small config wrapper source, exposing a local include path.",
+      "repair": "Reject Windows path aliases, repeated leading slashes, double encodings and every config.inc.php suffix before PHP/static routing. The wrapper contains no SQL password; no SQL credential disclosure was observed.",
+      "status": "FIXED",
+      "verified_by": [
+        "Block protected/path traversal /config.inc.php/extra",
+        "Block protected/path traversal /config.inc.php::$DATA",
+        "Block protected/path traversal //config.inc.php",
+        "Block protected/path traversal /%2fconfig.inc.php"
+      ]
+    },
+    {
+      "id": "DBSEC-07",
+      "severity": "LOW",
+      "before": "Managed CLI helpers verified the CA but did not require the certificate hostname.",
+      "repair": "Persist VERIFY_IDENTITY after the loopback SAN certificate has been installed.",
+      "status": "FIXED",
+      "verified_by": [
+        "Managed admin helper uses VERIFY_IDENTITY",
+        "Managed app helper uses VERIFY_IDENTITY",
+        "Managed backup helper uses VERIFY_IDENTITY",
+        "Managed migrate helper uses VERIFY_IDENTITY"
+      ]
+    },
+    {
+      "id": "DBSEC-08",
+      "severity": "MEDIUM",
+      "summary": "Foreign keys do not enforce mandatory child/payment presence.",
+      "evidence": "A service note with no details or payment and a sale with its payment deleted were accepted on test clones.",
+      "remediation": "Enforce creation/deletion through backend transactions and authorization; approve any further SQL enforcement before modifying the ERD implementation.",
+      "status": "OPEN"
+    },
+    {
+      "id": "DBSEC-09",
+      "severity": "MEDIUM",
+      "before": "phpMyAdmin signon defaults removed HttpOnly from the signon session cookie.",
+      "repair": "Explicit SignonCookieParams preserve HttpOnly and SameSite Strict after phpMyAdmin opens the signon session.",
+      "status": "FIXED",
+      "verified_by": [
+        "Session cookie is HttpOnly and SameSite Strict"
+      ]
+    },
+    {
+      "id": "DBSEC-10",
+      "severity": "LOW",
+      "before": "phpMyAdmin overwrote the local no-referrer policy with same-origin.",
+      "repair": "Apply the local privacy headers through header_register_callback after phpMyAdmin builds its headers.",
+      "status": "FIXED",
+      "verified_by": [
+        "Referrer-Policy"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "SEC-0001",
+      "category": "server",
+      "case": "Loopback only",
+      "status": "PASS",
+      "source_id": "AUD-0001",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0002",
+      "category": "server",
+      "case": "TLS mandatory",
+      "status": "PASS",
+      "source_id": "AUD-0002",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0003",
+      "category": "server",
+      "case": "LOCAL INFILE disabled",
+      "status": "PASS",
+      "source_id": "AUD-0003",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0004",
+      "category": "server",
+      "case": "Server file export/import disabled",
+      "status": "PASS",
+      "source_id": "AUD-0004",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0005",
+      "category": "server",
+      "case": "Name resolution disabled",
+      "status": "PASS",
+      "source_id": "AUD-0005",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0006",
+      "category": "server",
+      "case": "UTC server timezone",
+      "status": "PASS",
+      "source_id": "AUD-0006",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0007",
+      "category": "server",
+      "case": "InnoDB default",
+      "status": "PASS",
+      "source_id": "AUD-0007",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0008",
+      "category": "server",
+      "case": "No anonymous SQL user",
+      "status": "PASS",
+      "source_id": "AUD-0008",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0009",
+      "category": "server",
+      "case": "No wildcard/remote SQL accounts",
+      "status": "PASS",
+      "source_id": "AUD-0009",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0010",
+      "category": "server",
+      "case": "System SQL users locked",
+      "status": "PASS",
+      "source_id": "AUD-0010",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0011",
+      "category": "server",
+      "case": "No empty auth hash for interactive users",
+      "status": "PASS",
+      "source_id": "AUD-0011",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0012",
+      "category": "server",
+      "case": "X Plugin inactive",
+      "status": "PASS",
+      "source_id": "AUD-0012",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0013",
+      "category": "server",
+      "case": "SQL mode STRICT_TRANS_TABLES",
+      "status": "PASS",
+      "source_id": "AUD-0013",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0014",
+      "category": "server",
+      "case": "SQL mode NO_ZERO_DATE",
+      "status": "PASS",
+      "source_id": "AUD-0014",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0015",
+      "category": "server",
+      "case": "SQL mode NO_ZERO_IN_DATE",
+      "status": "PASS",
+      "source_id": "AUD-0015",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0016",
+      "category": "server",
+      "case": "SQL mode ERROR_FOR_DIVISION_BY_ZERO",
+      "status": "PASS",
+      "source_id": "AUD-0016",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0017",
+      "category": "server",
+      "case": "SQL mode NO_ENGINE_SUBSTITUTION",
+      "status": "PASS",
+      "source_id": "AUD-0017",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0018",
+      "category": "server",
+      "case": "TLS 1.2/1.3 allowed only",
+      "status": "PASS",
+      "source_id": "AUD-0018",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0019",
+      "category": "accounts",
+      "case": "app database scope is exactly the two ERD databases",
+      "status": "PASS",
+      "source_id": "AUD-0019",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0020",
+      "category": "accounts",
+      "case": "app has no global admin privilege",
+      "status": "PASS",
+      "source_id": "AUD-0020",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0021",
+      "category": "accounts",
+      "case": "app cannot delegate grants",
+      "status": "PASS",
+      "source_id": "AUD-0021",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0022",
+      "category": "accounts",
+      "case": "app uses caching_sha2_password",
+      "status": "PASS",
+      "source_id": "AUD-0022",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0023",
+      "category": "accounts",
+      "case": "app requires encrypted transport",
+      "status": "PASS",
+      "source_id": "AUD-0023",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0024",
+      "category": "accounts",
+      "case": "app connection limit",
+      "status": "PASS",
+      "source_id": "AUD-0024",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0025",
+      "category": "accounts",
+      "case": "app failed-login policy",
+      "status": "PASS",
+      "source_id": "AUD-0025",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0026",
+      "category": "privileges",
+      "case": "app cannot read MySQL auth tables",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0026",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0027",
+      "category": "privileges",
+      "case": "app cannot access archived PRD data",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0027",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0028",
+      "category": "privileges",
+      "case": "app can read garasi_hobby_servis",
+      "status": "PASS",
+      "source_id": "AUD-0028",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0029",
+      "category": "privileges",
+      "case": "app can read garasi_hobby_showroom",
+      "status": "PASS",
+      "source_id": "AUD-0029",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0030",
+      "category": "accounts",
+      "case": "backup database scope is exactly the two ERD databases",
+      "status": "PASS",
+      "source_id": "AUD-0030",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0031",
+      "category": "accounts",
+      "case": "backup has no global admin privilege",
+      "status": "PASS",
+      "source_id": "AUD-0031",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0032",
+      "category": "accounts",
+      "case": "backup cannot delegate grants",
+      "status": "PASS",
+      "source_id": "AUD-0032",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0033",
+      "category": "accounts",
+      "case": "backup uses caching_sha2_password",
+      "status": "PASS",
+      "source_id": "AUD-0033",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0034",
+      "category": "accounts",
+      "case": "backup requires encrypted transport",
+      "status": "PASS",
+      "source_id": "AUD-0034",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0035",
+      "category": "accounts",
+      "case": "backup connection limit",
+      "status": "PASS",
+      "source_id": "AUD-0035",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0036",
+      "category": "accounts",
+      "case": "backup failed-login policy",
+      "status": "PASS",
+      "source_id": "AUD-0036",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0037",
+      "category": "privileges",
+      "case": "backup cannot read MySQL auth tables",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0037",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0038",
+      "category": "privileges",
+      "case": "backup cannot access archived PRD data",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0038",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0039",
+      "category": "privileges",
+      "case": "backup can read garasi_hobby_servis",
+      "status": "PASS",
+      "source_id": "AUD-0039",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0040",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0040",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0041",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0041",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0042",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0042",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0043",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0043",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0044",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0044",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0045",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0045",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0046",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0046",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0047",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0047",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0048",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0048",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0049",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0049",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0050",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0050",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0051",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0051",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0052",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0052",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0053",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0053",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0054",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0054",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0055",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0055",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0056",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0056",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0057",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0057",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0058",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0058",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0059",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0059",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0060",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0060",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0061",
+      "category": "privileges",
+      "case": "backup can read garasi_hobby_showroom",
+      "status": "PASS",
+      "source_id": "AUD-0061",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0062",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0062",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0063",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0063",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0064",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0064",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0065",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0065",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0066",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0066",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0067",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0067",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0068",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0068",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0069",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0069",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0070",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0070",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0071",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0071",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0072",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0072",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0073",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0073",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0074",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0074",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0075",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0075",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0076",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0076",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0077",
+      "category": "accounts",
+      "case": "migrate database scope is exactly the two ERD databases",
+      "status": "PASS",
+      "source_id": "AUD-0077",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0078",
+      "category": "accounts",
+      "case": "migrate has no global admin privilege",
+      "status": "PASS",
+      "source_id": "AUD-0078",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0079",
+      "category": "accounts",
+      "case": "migrate cannot delegate grants",
+      "status": "PASS",
+      "source_id": "AUD-0079",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0080",
+      "category": "accounts",
+      "case": "migrate uses caching_sha2_password",
+      "status": "PASS",
+      "source_id": "AUD-0080",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0081",
+      "category": "accounts",
+      "case": "migrate requires encrypted transport",
+      "status": "PASS",
+      "source_id": "AUD-0081",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0082",
+      "category": "accounts",
+      "case": "migrate connection limit",
+      "status": "PASS",
+      "source_id": "AUD-0082",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0083",
+      "category": "accounts",
+      "case": "migrate failed-login policy",
+      "status": "PASS",
+      "source_id": "AUD-0083",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0084",
+      "category": "privileges",
+      "case": "migrate cannot read MySQL auth tables",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0084",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0085",
+      "category": "privileges",
+      "case": "migrate cannot access archived PRD data",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0085",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0086",
+      "category": "privileges",
+      "case": "migrate can read garasi_hobby_servis",
+      "status": "PASS",
+      "source_id": "AUD-0086",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0087",
+      "category": "privileges",
+      "case": "migrate can read garasi_hobby_showroom",
+      "status": "PASS",
+      "source_id": "AUD-0087",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0088",
+      "category": "accounts",
+      "case": "viewer database scope is exactly the two ERD databases",
+      "status": "PASS",
+      "source_id": "AUD-0088",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0089",
+      "category": "accounts",
+      "case": "viewer has no global admin privilege",
+      "status": "PASS",
+      "source_id": "AUD-0089",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0090",
+      "category": "accounts",
+      "case": "viewer cannot delegate grants",
+      "status": "PASS",
+      "source_id": "AUD-0090",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0091",
+      "category": "accounts",
+      "case": "viewer uses caching_sha2_password",
+      "status": "PASS",
+      "source_id": "AUD-0091",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0092",
+      "category": "accounts",
+      "case": "viewer requires encrypted transport",
+      "status": "PASS",
+      "source_id": "AUD-0092",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0093",
+      "category": "accounts",
+      "case": "viewer connection limit",
+      "status": "PASS",
+      "source_id": "AUD-0093",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0094",
+      "category": "accounts",
+      "case": "viewer failed-login policy",
+      "status": "PASS",
+      "source_id": "AUD-0094",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0095",
+      "category": "privileges",
+      "case": "viewer cannot read MySQL auth tables",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0095",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0096",
+      "category": "privileges",
+      "case": "viewer cannot access archived PRD data",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0096",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0097",
+      "category": "privileges",
+      "case": "viewer can read garasi_hobby_servis",
+      "status": "PASS",
+      "source_id": "AUD-0097",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0098",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0098",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0099",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0099",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0100",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0100",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0101",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0101",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0102",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0102",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0103",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0103",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0104",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0104",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0105",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0105",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0106",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0106",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0107",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0107",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0108",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0108",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0109",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0109",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0110",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0110",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0111",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0111",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0112",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0112",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0113",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0113",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0114",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0114",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0115",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0115",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0116",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0116",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0117",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0117",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0118",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0118",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0119",
+      "category": "privileges",
+      "case": "viewer can read garasi_hobby_showroom",
+      "status": "PASS",
+      "source_id": "AUD-0119",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0120",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0120",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0121",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0121",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0122",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0122",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0123",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0123",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0124",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0124",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0125",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0125",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0126",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0126",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0127",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0127",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0128",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0128",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0129",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0129",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0130",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0130",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0131",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0131",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0132",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0132",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0133",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0133",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0134",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0134",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0135",
+      "category": "tls",
+      "case": "admin verifies certificate hostname and CA",
+      "status": "PASS",
+      "source_id": "AUD-0135",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0136",
+      "category": "tls",
+      "case": "admin rejects plaintext",
+      "status": "PASS",
+      "detail": "MySQL error 1045",
+      "source_id": "AUD-0136",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0137",
+      "category": "tls",
+      "case": "app verifies certificate hostname and CA",
+      "status": "PASS",
+      "source_id": "AUD-0137",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0138",
+      "category": "tls",
+      "case": "app rejects plaintext",
+      "status": "PASS",
+      "detail": "MySQL error 1045",
+      "source_id": "AUD-0138",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0139",
+      "category": "tls",
+      "case": "backup verifies certificate hostname and CA",
+      "status": "PASS",
+      "source_id": "AUD-0139",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0140",
+      "category": "tls",
+      "case": "backup rejects plaintext",
+      "status": "PASS",
+      "detail": "MySQL error 1045",
+      "source_id": "AUD-0140",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0141",
+      "category": "tls",
+      "case": "migrate verifies certificate hostname and CA",
+      "status": "PASS",
+      "source_id": "AUD-0141",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0142",
+      "category": "tls",
+      "case": "migrate rejects plaintext",
+      "status": "PASS",
+      "detail": "MySQL error 1045",
+      "source_id": "AUD-0142",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0143",
+      "category": "tls",
+      "case": "viewer verifies certificate hostname and CA",
+      "status": "PASS",
+      "source_id": "AUD-0143",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0144",
+      "category": "tls",
+      "case": "viewer rejects plaintext",
+      "status": "PASS",
+      "detail": "MySQL error 1045",
+      "source_id": "AUD-0144",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0145",
+      "category": "tls",
+      "case": "Negotiation TLSv1.2",
+      "status": "PASS",
+      "source_id": "AUD-0145",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0146",
+      "category": "tls",
+      "case": "Negotiation TLSv1.3",
+      "status": "PASS",
+      "source_id": "AUD-0146",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0147",
+      "category": "tls",
+      "case": "localhost hostname verified",
+      "status": "PASS",
+      "source_id": "AUD-0147",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0148",
+      "category": "tls",
+      "case": "Untrusted CA rejected",
+      "status": "PASS",
+      "source_id": "AUD-0148",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0149",
+      "category": "tls",
+      "case": "Server chain and loopback SAN valid",
+      "status": "PASS",
+      "source_id": "AUD-0149",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0150",
+      "category": "tls",
+      "case": "Certificate remains valid beyond 30 days",
+      "status": "PASS",
+      "source_id": "AUD-0150",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0151",
+      "category": "authentication",
+      "case": "Disposable auth account correct password works",
+      "status": "PASS",
+      "source_id": "AUD-0151",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0152",
+      "category": "authentication",
+      "case": "Disposable bad password attempt 1 rejected",
+      "status": "PASS",
+      "source_id": "AUD-0152",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0153",
+      "category": "authentication",
+      "case": "Disposable bad password attempt 2 rejected",
+      "status": "PASS",
+      "source_id": "AUD-0153",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0154",
+      "category": "authentication",
+      "case": "Disposable bad password attempt 3 rejected",
+      "status": "PASS",
+      "source_id": "AUD-0154",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0155",
+      "category": "authentication",
+      "case": "Failed-login threshold blocks correct password until unlock",
+      "status": "PASS",
+      "source_id": "AUD-0155",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0156",
+      "category": "authentication",
+      "case": "Administrative unlock restores account",
+      "status": "PASS",
+      "source_id": "AUD-0156",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0157",
+      "category": "authentication",
+      "case": "SQL connection cap enforced",
+      "status": "PASS",
+      "source_id": "AUD-0157",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0158",
+      "category": "authentication",
+      "case": "Connection capacity restored after clients close",
+      "status": "PASS",
+      "source_id": "AUD-0158",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0159",
+      "category": "schema",
+      "case": "garasi_hobby_servis exact ERD schema",
+      "status": "PASS",
+      "source_id": "AUD-0159",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0160",
+      "category": "constraints",
+      "case": "servis.pelanggan duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0160",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0161",
+      "category": "input-bounds",
+      "case": "servis.pelanggan.nama NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0161",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0162",
+      "category": "input-bounds",
+      "case": "servis.pelanggan.nama rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0162",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0163",
+      "category": "input-bounds",
+      "case": "servis.pelanggan.kontak NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0163",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0164",
+      "category": "input-bounds",
+      "case": "servis.pelanggan.kontak rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0164",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0165",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0165",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0166",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0166",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0167",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0167",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0168",
+      "category": "constraints",
+      "case": "servis.kendaraan duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0168",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0169",
+      "category": "constraints",
+      "case": "servis.kendaraan.id_pelanggan missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452",
+      "source_id": "AUD-0169",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0170",
+      "category": "constraints",
+      "case": "servis.kendaraan.id_pelanggan NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0170",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0171",
+      "category": "constraints",
+      "case": "servis.kendaraan.no_polisi unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0171",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0172",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.no_polisi NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0172",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0173",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.no_polisi rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0173",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0174",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.merek NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0174",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0175",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.merek rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0175",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0176",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.tipe NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0176",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0177",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.tipe rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0177",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0178",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.tahun NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0178",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0179",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.tahun rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0179",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0180",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.warna NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0180",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0181",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.warna rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0181",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0182",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0182",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0183",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0183",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0184",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0184",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0185",
+      "category": "constraints",
+      "case": "servis.nota_servis duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0185",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0186",
+      "category": "constraints",
+      "case": "servis.nota_servis.id_kendaraan missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452",
+      "source_id": "AUD-0186",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0187",
+      "category": "constraints",
+      "case": "servis.nota_servis.id_kendaraan NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0187",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0188",
+      "category": "constraints",
+      "case": "servis.nota_servis.id_mekanik missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452",
+      "source_id": "AUD-0188",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0189",
+      "category": "constraints",
+      "case": "servis.nota_servis.id_mekanik NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0189",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0190",
+      "category": "constraints",
+      "case": "servis.nota_servis.id_pegawai missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452",
+      "source_id": "AUD-0190",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0191",
+      "category": "constraints",
+      "case": "servis.nota_servis.id_pegawai NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0191",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0192",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.no_work_order NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0192",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0193",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.no_work_order rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0193",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0194",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.tanggal NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0194",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0195",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.tanggal rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1292",
+      "source_id": "AUD-0195",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0196",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.odometer NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0196",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0197",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.odometer rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0197",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0198",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.keluhan NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0198",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0199",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.keluhan rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0199",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0200",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.subtotal NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0200",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0201",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.subtotal rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0201",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0202",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.diskon NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0202",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0203",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.diskon rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0203",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0204",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.total NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0204",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0205",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.total rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0205",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0206",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0206",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0207",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0207",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0208",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0208",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0209",
+      "category": "constraints",
+      "case": "servis.mekanik duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0209",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0210",
+      "category": "input-bounds",
+      "case": "servis.mekanik.nama_mekanik NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0210",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0211",
+      "category": "input-bounds",
+      "case": "servis.mekanik.nama_mekanik rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0211",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0212",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0212",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0213",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0213",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0214",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0214",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0215",
+      "category": "constraints",
+      "case": "servis.pegawai duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0215",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0216",
+      "category": "input-bounds",
+      "case": "servis.pegawai.nama_pegawai NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0216",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0217",
+      "category": "input-bounds",
+      "case": "servis.pegawai.nama_pegawai rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0217",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0218",
+      "category": "input-bounds",
+      "case": "servis.pegawai.jabatan NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0218",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0219",
+      "category": "input-bounds",
+      "case": "servis.pegawai.jabatan rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0219",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0220",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0220",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0221",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0221",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0222",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0222",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0223",
+      "category": "constraints",
+      "case": "servis.detail_servis duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0223",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0224",
+      "category": "constraints",
+      "case": "servis.detail_servis.id_nota missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452",
+      "source_id": "AUD-0224",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0225",
+      "category": "constraints",
+      "case": "servis.detail_servis.id_nota NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0225",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0226",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.jenis NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0226",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0227",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.jenis rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0227",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0228",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.uraian NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0228",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0229",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.uraian rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0229",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0230",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.qty NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0230",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0231",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.qty rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0231",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0232",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.harga NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0232",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0233",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.harga rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0233",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0234",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.diskon NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0234",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0235",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.diskon rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0235",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0236",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.jumlah NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0236",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0237",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.jumlah rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0237",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0238",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0238",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0239",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0239",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0240",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0240",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0241",
+      "category": "constraints",
+      "case": "servis.pembayaran duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0241",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0242",
+      "category": "constraints",
+      "case": "servis.pembayaran.id_nota missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452",
+      "source_id": "AUD-0242",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0243",
+      "category": "constraints",
+      "case": "servis.pembayaran.id_nota NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0243",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0244",
+      "category": "constraints",
+      "case": "servis.pembayaran.id_nota unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0244",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0245",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.metode NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0245",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0246",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.metode rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0246",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0247",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.diterima NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0247",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0248",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.diterima rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0248",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0249",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.kembalian NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0249",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0250",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.kembalian rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0250",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0251",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.tanggal_konfirmasi NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0251",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0252",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.tanggal_konfirmasi rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1292",
+      "source_id": "AUD-0252",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0253",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0253",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0254",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0254",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0255",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0255",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0256",
+      "category": "constraints",
+      "case": "servis.nota_servis parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0256",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0257",
+      "category": "constraints",
+      "case": "servis.nota_servis parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0257",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0258",
+      "category": "constraints",
+      "case": "servis.kendaraan parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0258",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0259",
+      "category": "constraints",
+      "case": "servis.kendaraan parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0259",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0260",
+      "category": "constraints",
+      "case": "servis.pegawai parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0260",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0261",
+      "category": "constraints",
+      "case": "servis.pegawai parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0261",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0262",
+      "category": "constraints",
+      "case": "servis.pelanggan parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0262",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0263",
+      "category": "constraints",
+      "case": "servis.pelanggan parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0263",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0264",
+      "category": "constraints",
+      "case": "servis.mekanik parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0264",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0265",
+      "category": "constraints",
+      "case": "servis.mekanik parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0265",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0266",
+      "category": "schema",
+      "case": "garasi_hobby_showroom exact ERD schema",
+      "status": "PASS",
+      "source_id": "AUD-0266",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0267",
+      "category": "constraints",
+      "case": "showroom.pembeli duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0267",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0268",
+      "category": "input-bounds",
+      "case": "showroom.pembeli.nama NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0268",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0269",
+      "category": "input-bounds",
+      "case": "showroom.pembeli.nama rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0269",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0270",
+      "category": "input-bounds",
+      "case": "showroom.pembeli.kontak NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0270",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0271",
+      "category": "input-bounds",
+      "case": "showroom.pembeli.kontak rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0271",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0272",
+      "category": "input-bounds",
+      "case": "showroom.pembeli.alamat NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0272",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0273",
+      "category": "input-bounds",
+      "case": "showroom.pembeli.alamat rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0273",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0274",
+      "category": "ddl",
+      "case": "app cannot ALTER showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0274",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0275",
+      "category": "ddl",
+      "case": "backup cannot ALTER showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0275",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0276",
+      "category": "ddl",
+      "case": "viewer cannot ALTER showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0276",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0277",
+      "category": "constraints",
+      "case": "showroom.penjualan duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0277",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0278",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_pembeli missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452",
+      "source_id": "AUD-0278",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0279",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_pembeli NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0279",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0280",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_motor missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452",
+      "source_id": "AUD-0280",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0281",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_motor NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0281",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0282",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_pegawai missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452",
+      "source_id": "AUD-0282",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0283",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_pegawai NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0283",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0284",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_motor unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0284",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0285",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.tanggal_transaksi NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0285",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0286",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.tanggal_transaksi rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1292",
+      "source_id": "AUD-0286",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0287",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.subtotal NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0287",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0288",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.subtotal rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0288",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0289",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.diskon NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0289",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0290",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.diskon rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0290",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0291",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.alasan_diskon NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0291",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0292",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.alasan_diskon rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0292",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0293",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.total NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0293",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0294",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.total rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0294",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0295",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.status NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0295",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0296",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.status rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0296",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0297",
+      "category": "ddl",
+      "case": "app cannot ALTER showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0297",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0298",
+      "category": "ddl",
+      "case": "backup cannot ALTER showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0298",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0299",
+      "category": "ddl",
+      "case": "viewer cannot ALTER showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0299",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0300",
+      "category": "constraints",
+      "case": "showroom.motor duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0300",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0301",
+      "category": "constraints",
+      "case": "showroom.motor.no_polisi unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0301",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0302",
+      "category": "constraints",
+      "case": "showroom.motor.kode_inventaris unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0302",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0303",
+      "category": "constraints",
+      "case": "showroom.motor.no_rangka unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0303",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0304",
+      "category": "constraints",
+      "case": "showroom.motor.no_mesin unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0304",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0305",
+      "category": "input-bounds",
+      "case": "showroom.motor.kode_inventaris NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0305",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0306",
+      "category": "input-bounds",
+      "case": "showroom.motor.kode_inventaris rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0306",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0307",
+      "category": "input-bounds",
+      "case": "showroom.motor.no_polisi NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0307",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0308",
+      "category": "input-bounds",
+      "case": "showroom.motor.no_polisi rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0308",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0309",
+      "category": "input-bounds",
+      "case": "showroom.motor.merek NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0309",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0310",
+      "category": "input-bounds",
+      "case": "showroom.motor.merek rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0310",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0311",
+      "category": "input-bounds",
+      "case": "showroom.motor.tipe NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0311",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0312",
+      "category": "input-bounds",
+      "case": "showroom.motor.tipe rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0312",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0313",
+      "category": "input-bounds",
+      "case": "showroom.motor.tahun NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0313",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0314",
+      "category": "input-bounds",
+      "case": "showroom.motor.tahun rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0314",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0315",
+      "category": "input-bounds",
+      "case": "showroom.motor.warna NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0315",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0316",
+      "category": "input-bounds",
+      "case": "showroom.motor.warna rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0316",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0317",
+      "category": "input-bounds",
+      "case": "showroom.motor.no_rangka NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0317",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0318",
+      "category": "input-bounds",
+      "case": "showroom.motor.no_rangka rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0318",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0319",
+      "category": "input-bounds",
+      "case": "showroom.motor.no_mesin NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0319",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0320",
+      "category": "input-bounds",
+      "case": "showroom.motor.no_mesin rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0320",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0321",
+      "category": "input-bounds",
+      "case": "showroom.motor.harga_jual NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0321",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0322",
+      "category": "input-bounds",
+      "case": "showroom.motor.harga_jual rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0322",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0323",
+      "category": "input-bounds",
+      "case": "showroom.motor.status NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0323",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0324",
+      "category": "input-bounds",
+      "case": "showroom.motor.status rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0324",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0325",
+      "category": "ddl",
+      "case": "app cannot ALTER showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0325",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0326",
+      "category": "ddl",
+      "case": "backup cannot ALTER showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0326",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0327",
+      "category": "ddl",
+      "case": "viewer cannot ALTER showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0327",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0328",
+      "category": "constraints",
+      "case": "showroom.pegawai duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0328",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0329",
+      "category": "input-bounds",
+      "case": "showroom.pegawai.nama_pegawai NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0329",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0330",
+      "category": "input-bounds",
+      "case": "showroom.pegawai.nama_pegawai rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0330",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0331",
+      "category": "input-bounds",
+      "case": "showroom.pegawai.jabatan NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0331",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0332",
+      "category": "input-bounds",
+      "case": "showroom.pegawai.jabatan rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0332",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0333",
+      "category": "ddl",
+      "case": "app cannot ALTER showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0333",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0334",
+      "category": "ddl",
+      "case": "backup cannot ALTER showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0334",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0335",
+      "category": "ddl",
+      "case": "viewer cannot ALTER showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0335",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0336",
+      "category": "constraints",
+      "case": "showroom.pembayaran duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0336",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0337",
+      "category": "constraints",
+      "case": "showroom.pembayaran.id_penjualan missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452",
+      "source_id": "AUD-0337",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0338",
+      "category": "constraints",
+      "case": "showroom.pembayaran.id_penjualan NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0338",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0339",
+      "category": "constraints",
+      "case": "showroom.pembayaran.id_pegawai missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452",
+      "source_id": "AUD-0339",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0340",
+      "category": "constraints",
+      "case": "showroom.pembayaran.id_pegawai NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0340",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0341",
+      "category": "constraints",
+      "case": "showroom.pembayaran.id_penjualan unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062",
+      "source_id": "AUD-0341",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0342",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.metode NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0342",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0343",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.metode rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0343",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0344",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.jumlah_diterima NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0344",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0345",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.jumlah_diterima rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264",
+      "source_id": "AUD-0345",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0346",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.referensi NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0346",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0347",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.referensi rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406",
+      "source_id": "AUD-0347",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0348",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.tanggal_konfirmasi NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048",
+      "source_id": "AUD-0348",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0349",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.tanggal_konfirmasi rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1292",
+      "source_id": "AUD-0349",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0350",
+      "category": "ddl",
+      "case": "app cannot ALTER showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0350",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0351",
+      "category": "ddl",
+      "case": "backup cannot ALTER showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0351",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0352",
+      "category": "ddl",
+      "case": "viewer cannot ALTER showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142",
+      "source_id": "AUD-0352",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0353",
+      "category": "constraints",
+      "case": "showroom.pegawai parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0353",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0354",
+      "category": "constraints",
+      "case": "showroom.pegawai parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0354",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0355",
+      "category": "constraints",
+      "case": "showroom.pembeli parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0355",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0356",
+      "category": "constraints",
+      "case": "showroom.pembeli parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0356",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0357",
+      "category": "constraints",
+      "case": "showroom.motor parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0357",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0358",
+      "category": "constraints",
+      "case": "showroom.motor parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0358",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0359",
+      "category": "constraints",
+      "case": "showroom.penjualan parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0359",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0360",
+      "category": "constraints",
+      "case": "showroom.penjualan parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451",
+      "source_id": "AUD-0360",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0361",
+      "category": "transactions",
+      "case": "servis explicit rollback restores value",
+      "status": "PASS",
+      "source_id": "AUD-0361",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0362",
+      "category": "transactions",
+      "case": "servis disconnect after duplicate error rolls back",
+      "status": "PASS",
+      "source_id": "AUD-0362",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0363",
+      "category": "concurrency",
+      "case": "servis deadlock has one victim and one commit",
+      "status": "PASS",
+      "source_id": "AUD-0363",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0364",
+      "category": "transactions",
+      "case": "showroom explicit rollback restores value",
+      "status": "PASS",
+      "source_id": "AUD-0364",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0365",
+      "category": "transactions",
+      "case": "showroom disconnect after duplicate error rolls back",
+      "status": "PASS",
+      "source_id": "AUD-0365",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0366",
+      "category": "concurrency",
+      "case": "showroom deadlock has one victim and one commit",
+      "status": "PASS",
+      "source_id": "AUD-0366",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0367",
+      "category": "concurrency",
+      "case": "Eight service payments: one commit, seven duplicate rejections",
+      "status": "PASS",
+      "source_id": "AUD-0367",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0368",
+      "category": "concurrency",
+      "case": "Eight motor sales: one commit, seven duplicate rejections",
+      "status": "PASS",
+      "source_id": "AUD-0368",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0369",
+      "category": "business-boundary",
+      "case": "Negative service total accepted by ERD-only schema",
+      "status": "WARN",
+      "detail": "Observed in disposable schema; no constraint was added to the user ERD.",
+      "source_id": "AUD-0369",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0370",
+      "category": "business-boundary",
+      "case": "Zero service quantity accepted",
+      "status": "WARN",
+      "detail": "Observed in disposable schema; no constraint was added to the user ERD.",
+      "source_id": "AUD-0370",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0371",
+      "category": "business-boundary",
+      "case": "Negative sale price accepted by ERD-only schema",
+      "status": "WARN",
+      "detail": "Observed in disposable schema; no constraint was added to the user ERD.",
+      "source_id": "AUD-0371",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0372",
+      "category": "business-boundary",
+      "case": "Sale total can differ from subtotal and discount",
+      "status": "WARN",
+      "detail": "Observed in disposable schema; no constraint was added to the user ERD.",
+      "source_id": "AUD-0372",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0373",
+      "category": "business-boundary",
+      "case": "Session FK bypass with compromised writer credentials",
+      "status": "WARN",
+      "detail": "This is a native MySQL session capability, not a remote authentication bypass.",
+      "source_id": "AUD-0373",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0374",
+      "category": "preservation",
+      "case": "Active ERD tables and row contents unchanged",
+      "status": "PASS",
+      "source_id": "AUD-0374",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0375",
+      "category": "preservation",
+      "case": "draw.io file unchanged",
+      "status": "PASS",
+      "source_id": "AUD-0375",
+      "suite": "core"
+    },
+    {
+      "id": "SEC-0376",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/secrets.json",
+      "status": "PASS",
+      "source_id": "AUD-0001",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0377",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/my.ini",
+      "status": "PASS",
+      "source_id": "AUD-0002",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0378",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/data/ca-key.pem",
+      "status": "PASS",
+      "source_id": "AUD-0003",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0379",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/data/server-key.pem",
+      "status": "PASS",
+      "source_id": "AUD-0004",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0380",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/phpmyadmin/viewer.json",
+      "status": "PASS",
+      "source_id": "AUD-0005",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0381",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/phpmyadmin/config.php",
+      "status": "PASS",
+      "source_id": "AUD-0006",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0382",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/phpmyadmin/sessions",
+      "status": "PASS",
+      "source_id": "AUD-0007",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0383",
+      "category": "filesystem",
+      "case": "No broad user ACL: apps/api/.env.database.local",
+      "status": "PASS",
+      "source_id": "AUD-0008",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0384",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/security-audit/zvbnbehy",
+      "status": "PASS",
+      "source_id": "AUD-0009",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0385",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/client-admin.cnf",
+      "status": "PASS",
+      "source_id": "AUD-0010",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0386",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/client-app.cnf",
+      "status": "PASS",
+      "source_id": "AUD-0011",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0387",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/client-backup.cnf",
+      "status": "PASS",
+      "source_id": "AUD-0012",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0388",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/client-migrate.cnf",
+      "status": "PASS",
+      "source_id": "AUD-0013",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0389",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby-20261108-120603.sql",
+      "status": "PASS",
+      "source_id": "AUD-0014",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0390",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby-20261108-120900.sql",
+      "status": "PASS",
+      "source_id": "AUD-0015",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0391",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby-20261108-121233.sql",
+      "status": "PASS",
+      "source_id": "AUD-0016",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0392",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby-20261108-121527.sql",
+      "status": "PASS",
+      "source_id": "AUD-0017",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0393",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby-20261108-123306.sql",
+      "status": "PASS",
+      "source_id": "AUD-0018",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0394",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby_servis-20261108-123932.sql",
+      "status": "PASS",
+      "source_id": "AUD-0019",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0395",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby_servis-20261108-131043.sql",
+      "status": "PASS",
+      "source_id": "AUD-0020",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0396",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby_showroom-20261108-123933.sql",
+      "status": "PASS",
+      "source_id": "AUD-0021",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0397",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby_showroom-20261108-131048.sql",
+      "status": "PASS",
+      "source_id": "AUD-0022",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0398",
+      "category": "secret-hygiene",
+      "case": "Private runtime/credentials are not tracked",
+      "status": "PASS",
+      "source_id": "AUD-0023",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0399",
+      "category": "secret-hygiene",
+      "case": "Git ignores .local/mysql/secrets.json",
+      "status": "PASS",
+      "source_id": "AUD-0024",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0400",
+      "category": "secret-hygiene",
+      "case": "Git ignores .local/phpmyadmin/viewer.json",
+      "status": "PASS",
+      "source_id": "AUD-0025",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0401",
+      "category": "secret-hygiene",
+      "case": "Git ignores .tools/php-8.3.36-1/php.exe",
+      "status": "PASS",
+      "source_id": "AUD-0026",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0402",
+      "category": "secret-hygiene",
+      "case": "Git ignores apps/api/.env.database.local",
+      "status": "PASS",
+      "source_id": "AUD-0027",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0403",
+      "category": "secret-hygiene",
+      "case": "Known generated SQL passwords absent from public project files",
+      "status": "PASS",
+      "detail": "116 files scanned; matching paths: []",
+      "source_id": "AUD-0028",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0404",
+      "category": "secret-hygiene",
+      "case": "Credential storage is outside PHP document root",
+      "status": "PASS",
+      "source_id": "AUD-0029",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0405",
+      "category": "tls",
+      "case": "Managed admin helper uses VERIFY_IDENTITY",
+      "status": "PASS",
+      "source_id": "AUD-0030",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0406",
+      "category": "tls",
+      "case": "Managed admin helper TLS connection works",
+      "status": "PASS",
+      "source_id": "AUD-0031",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0407",
+      "category": "tls",
+      "case": "Managed app helper uses VERIFY_IDENTITY",
+      "status": "PASS",
+      "source_id": "AUD-0032",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0408",
+      "category": "tls",
+      "case": "Managed app helper TLS connection works",
+      "status": "PASS",
+      "source_id": "AUD-0033",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0409",
+      "category": "tls",
+      "case": "Managed backup helper uses VERIFY_IDENTITY",
+      "status": "PASS",
+      "source_id": "AUD-0034",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0410",
+      "category": "tls",
+      "case": "Managed backup helper TLS connection works",
+      "status": "PASS",
+      "source_id": "AUD-0035",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0411",
+      "category": "tls",
+      "case": "Managed migrate helper uses VERIFY_IDENTITY",
+      "status": "PASS",
+      "source_id": "AUD-0036",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0412",
+      "category": "tls",
+      "case": "Managed migrate helper TLS connection works",
+      "status": "PASS",
+      "source_id": "AUD-0037",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0413",
+      "category": "supply-chain",
+      "case": "MySQL archive SHA-256 matches pinned official package",
+      "status": "PASS",
+      "source_id": "AUD-0038",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0414",
+      "category": "supply-chain",
+      "case": "MySQL installed code matches verified archive",
+      "status": "PASS",
+      "detail": "107 code/binary files checked; mismatches: []",
+      "source_id": "AUD-0039",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0415",
+      "category": "supply-chain",
+      "case": "PHP archive SHA-256 matches pinned official package",
+      "status": "PASS",
+      "source_id": "AUD-0040",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0416",
+      "category": "supply-chain",
+      "case": "PHP installed code matches verified archive",
+      "status": "PASS",
+      "detail": "67 code/binary files checked; mismatches: []",
+      "source_id": "AUD-0041",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0417",
+      "category": "supply-chain",
+      "case": "phpMyAdmin archive SHA-256 matches pinned official package",
+      "status": "PASS",
+      "source_id": "AUD-0042",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0418",
+      "category": "supply-chain",
+      "case": "phpMyAdmin installed code matches verified archive",
+      "status": "PASS",
+      "detail": "2573 code/binary files checked; mismatches: []",
+      "source_id": "AUD-0043",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0419",
+      "category": "supply-chain",
+      "case": "MySQL archive Oracle GPG signature and pinned signer",
+      "status": "PASS",
+      "source_id": "AUD-0044",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0420",
+      "category": "supply-chain",
+      "case": "PHP runtime pinned version",
+      "status": "PASS",
+      "source_id": "AUD-0045",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0421",
+      "category": "php-hardening",
+      "case": "Session strict mode on; upload progress, URL include, display errors and local infile off",
+      "status": "PASS",
+      "source_id": "AUD-0046",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0422",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host untrusted.example",
+      "status": "PASS",
+      "source_id": "AUD-0001",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0423",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host 127.0.0.1:8081.untrusted.example",
+      "status": "PASS",
+      "source_id": "AUD-0002",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0424",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host localhost",
+      "status": "PASS",
+      "source_id": "AUD-0003",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0425",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host localhost:8081@untrusted.example",
+      "status": "PASS",
+      "source_id": "AUD-0004",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0426",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host 127.0.0.1:8081,untrusted.example",
+      "status": "PASS",
+      "source_id": "AUD-0005",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0427",
+      "category": "http-boundary",
+      "case": "GET rejects Origin http://untrusted.example",
+      "status": "PASS",
+      "source_id": "AUD-0006",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0428",
+      "category": "http-boundary",
+      "case": "POST rejects Origin http://untrusted.example",
+      "status": "PASS",
+      "source_id": "AUD-0007",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0429",
+      "category": "http-boundary",
+      "case": "OPTIONS rejects Origin http://untrusted.example",
+      "status": "PASS",
+      "source_id": "AUD-0008",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0430",
+      "category": "http-boundary",
+      "case": "GET rejects Origin null",
+      "status": "PASS",
+      "source_id": "AUD-0009",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0431",
+      "category": "http-boundary",
+      "case": "POST rejects Origin null",
+      "status": "PASS",
+      "source_id": "AUD-0010",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0432",
+      "category": "http-boundary",
+      "case": "OPTIONS rejects Origin null",
+      "status": "PASS",
+      "source_id": "AUD-0011",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0433",
+      "category": "http-boundary",
+      "case": "GET rejects Origin http://127.0.0.1:8082",
+      "status": "PASS",
+      "source_id": "AUD-0012",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0434",
+      "category": "http-boundary",
+      "case": "POST rejects Origin http://127.0.0.1:8082",
+      "status": "PASS",
+      "source_id": "AUD-0013",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0435",
+      "category": "http-boundary",
+      "case": "OPTIONS rejects Origin http://127.0.0.1:8082",
+      "status": "PASS",
+      "source_id": "AUD-0014",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0436",
+      "category": "http-boundary",
+      "case": "GET rejects Origin https://127.0.0.1:8081",
+      "status": "PASS",
+      "source_id": "AUD-0015",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0437",
+      "category": "http-boundary",
+      "case": "POST rejects Origin https://127.0.0.1:8081",
+      "status": "PASS",
+      "source_id": "AUD-0016",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0438",
+      "category": "http-boundary",
+      "case": "OPTIONS rejects Origin https://127.0.0.1:8081",
+      "status": "PASS",
+      "source_id": "AUD-0017",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0439",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php",
+      "status": "PASS",
+      "source_id": "AUD-0018",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0440",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php/extra",
+      "status": "PASS",
+      "source_id": "AUD-0019",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0441",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /CONFIG.INC.PHP",
+      "status": "PASS",
+      "source_id": "AUD-0020",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0442",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /setup/",
+      "status": "PASS",
+      "source_id": "AUD-0021",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0443",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /vendor/autoload.php",
+      "status": "PASS",
+      "source_id": "AUD-0022",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0444",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /libraries/classes/Config.php",
+      "status": "PASS",
+      "source_id": "AUD-0023",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0445",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /templates/base.twig",
+      "status": "PASS",
+      "source_id": "AUD-0024",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0446",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /.env",
+      "status": "PASS",
+      "source_id": "AUD-0025",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0447",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /.git/config",
+      "status": "PASS",
+      "source_id": "AUD-0026",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0448",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /%2eenv",
+      "status": "PASS",
+      "source_id": "AUD-0027",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0449",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /%2e%2e/.local/mysql/secrets.json",
+      "status": "PASS",
+      "source_id": "AUD-0028",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0450",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /../.local/mysql/secrets.json",
+      "status": "PASS",
+      "source_id": "AUD-0029",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0451",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /..%5c.local%5cmysql%5csecrets.json",
+      "status": "PASS",
+      "source_id": "AUD-0030",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0452",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /%252e%252e/.local/mysql/secrets.json",
+      "status": "PASS",
+      "source_id": "AUD-0031",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0453",
+      "category": "http-auth",
+      "case": "Unauthenticated database request redirects to signon",
+      "status": "PASS",
+      "source_id": "AUD-0039",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0454",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 0",
+      "status": "PASS",
+      "source_id": "AUD-0040",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0455",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 14",
+      "status": "PASS",
+      "source_id": "AUD-0041",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0456",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 8",
+      "status": "PASS",
+      "source_id": "AUD-0042",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0457",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 16",
+      "status": "PASS",
+      "source_id": "AUD-0043",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0458",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 10",
+      "status": "PASS",
+      "source_id": "AUD-0044",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0459",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 2055",
+      "status": "PASS",
+      "source_id": "AUD-0045",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0460",
+      "category": "http-auth",
+      "case": "Expired launch token rejected",
+      "status": "PASS",
+      "source_id": "AUD-0046",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0461",
+      "category": "http-auth",
+      "case": "Successful signon returns local 303 redirect",
+      "status": "PASS",
+      "source_id": "AUD-0047",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0462",
+      "category": "http-auth",
+      "case": "Fresh one-time signon displays actual service tables",
+      "status": "PASS",
+      "source_id": "AUD-0048",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0463",
+      "category": "http-auth",
+      "case": "Session ID regenerated after signon",
+      "status": "PASS",
+      "source_id": "AUD-0049",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0464",
+      "category": "http-auth",
+      "case": "Session cookie is HttpOnly and SameSite Strict",
+      "status": "PASS",
+      "source_id": "AUD-0050",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0465",
+      "category": "http-auth",
+      "case": "Launch token cannot be replayed",
+      "status": "PASS",
+      "source_id": "AUD-0051",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0466",
+      "category": "http-headers",
+      "case": "X-Content-Type-Options",
+      "status": "PASS",
+      "detail": "nosniff",
+      "source_id": "AUD-0052",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0467",
+      "category": "http-headers",
+      "case": "Referrer-Policy",
+      "status": "PASS",
+      "detail": "no-referrer",
+      "source_id": "AUD-0053",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0468",
+      "category": "http-headers",
+      "case": "Cache-Control",
+      "status": "PASS",
+      "detail": "no-store",
+      "source_id": "AUD-0054",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0469",
+      "category": "http-headers",
+      "case": "Frame embedding restricted",
+      "status": "PASS",
+      "source_id": "AUD-0055",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0470",
+      "category": "http-auth",
+      "case": "Authorized read-only structure garasi_hobby_showroom",
+      "status": "PASS",
+      "source_id": "AUD-0056",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0471",
+      "category": "http-auth",
+      "case": "Authorized read-only structure garasi_hobby_servis",
+      "status": "PASS",
+      "source_id": "AUD-0057",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0472",
+      "category": "http-csrf",
+      "case": "Invalid CSRF token rejected before SELECT",
+      "status": "PASS",
+      "source_id": "AUD-0058",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0473",
+      "category": "backup",
+      "case": "Backup SHA-256 sidecar garasi_hobby_servis",
+      "status": "PASS",
+      "source_id": "AUD-0098",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0474",
+      "category": "recovery",
+      "case": "Restore real backup garasi_hobby_servis into disposable target",
+      "status": "PASS",
+      "source_id": "AUD-0099",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0475",
+      "category": "recovery",
+      "case": "Restored table set garasi_hobby_servis",
+      "status": "PASS",
+      "source_id": "AUD-0100",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0476",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "source_id": "AUD-0101",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0477",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "source_id": "AUD-0102",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0478",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "source_id": "AUD-0103",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0479",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "source_id": "AUD-0104",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0480",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "source_id": "AUD-0105",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0481",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "source_id": "AUD-0106",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0482",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "source_id": "AUD-0107",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0483",
+      "category": "backup",
+      "case": "Backup SHA-256 sidecar garasi_hobby_showroom",
+      "status": "PASS",
+      "source_id": "AUD-0108",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0484",
+      "category": "recovery",
+      "case": "Restore real backup garasi_hobby_showroom into disposable target",
+      "status": "PASS",
+      "source_id": "AUD-0109",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0485",
+      "category": "recovery",
+      "case": "Restored table set garasi_hobby_showroom",
+      "status": "PASS",
+      "source_id": "AUD-0110",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0486",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "source_id": "AUD-0111",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0487",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "source_id": "AUD-0112",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0488",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "source_id": "AUD-0113",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0489",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "source_id": "AUD-0114",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0490",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "source_id": "AUD-0115",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0491",
+      "category": "recovery",
+      "case": "Readonly backup user exports populated servis fixture",
+      "status": "PASS",
+      "source_id": "AUD-0116",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0492",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.pelanggan",
+      "status": "PASS",
+      "source_id": "AUD-0117",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0493",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.kendaraan",
+      "status": "PASS",
+      "source_id": "AUD-0118",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0494",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.nota_servis",
+      "status": "PASS",
+      "source_id": "AUD-0119",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0495",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.mekanik",
+      "status": "PASS",
+      "source_id": "AUD-0120",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0496",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.pegawai",
+      "status": "PASS",
+      "source_id": "AUD-0121",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0497",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.detail_servis",
+      "status": "PASS",
+      "source_id": "AUD-0122",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0498",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.pembayaran",
+      "status": "PASS",
+      "source_id": "AUD-0123",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0499",
+      "category": "file-privileges",
+      "case": "app cannot SELECT INTO OUTFILE servis",
+      "status": "PASS",
+      "detail": "MySQL error 1227",
+      "source_id": "AUD-0124",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0500",
+      "category": "file-privileges",
+      "case": "viewer cannot SELECT INTO OUTFILE servis",
+      "status": "PASS",
+      "detail": "MySQL error 1227",
+      "source_id": "AUD-0125",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0501",
+      "category": "file-privileges",
+      "case": "backup cannot SELECT INTO OUTFILE servis",
+      "status": "PASS",
+      "detail": "MySQL error 1227",
+      "source_id": "AUD-0126",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0502",
+      "category": "file-privileges",
+      "case": "migrate cannot SELECT INTO OUTFILE servis",
+      "status": "PASS",
+      "detail": "MySQL error 1227",
+      "source_id": "AUD-0127",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0503",
+      "category": "file-privileges",
+      "case": "app cannot LOAD_FILE servis",
+      "status": "PASS",
+      "source_id": "AUD-0128",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0504",
+      "category": "file-privileges",
+      "case": "viewer cannot LOAD_FILE servis",
+      "status": "PASS",
+      "source_id": "AUD-0129",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0505",
+      "category": "file-privileges",
+      "case": "backup cannot LOAD_FILE servis",
+      "status": "PASS",
+      "source_id": "AUD-0130",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0506",
+      "category": "file-privileges",
+      "case": "migrate cannot LOAD_FILE servis",
+      "status": "PASS",
+      "source_id": "AUD-0131",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0507",
+      "category": "recovery",
+      "case": "Readonly backup user exports populated showroom fixture",
+      "status": "PASS",
+      "source_id": "AUD-0132",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0508",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip showroom.pembeli",
+      "status": "PASS",
+      "source_id": "AUD-0133",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0509",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip showroom.penjualan",
+      "status": "PASS",
+      "source_id": "AUD-0134",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0510",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip showroom.motor",
+      "status": "PASS",
+      "source_id": "AUD-0135",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0511",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip showroom.pegawai",
+      "status": "PASS",
+      "source_id": "AUD-0136",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0512",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip showroom.pembayaran",
+      "status": "PASS",
+      "source_id": "AUD-0137",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0513",
+      "category": "file-privileges",
+      "case": "app cannot SELECT INTO OUTFILE showroom",
+      "status": "PASS",
+      "detail": "MySQL error 1227",
+      "source_id": "AUD-0138",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0514",
+      "category": "file-privileges",
+      "case": "viewer cannot SELECT INTO OUTFILE showroom",
+      "status": "PASS",
+      "detail": "MySQL error 1227",
+      "source_id": "AUD-0139",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0515",
+      "category": "file-privileges",
+      "case": "backup cannot SELECT INTO OUTFILE showroom",
+      "status": "PASS",
+      "detail": "MySQL error 1227",
+      "source_id": "AUD-0140",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0516",
+      "category": "file-privileges",
+      "case": "migrate cannot SELECT INTO OUTFILE showroom",
+      "status": "PASS",
+      "detail": "MySQL error 1227",
+      "source_id": "AUD-0141",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0517",
+      "category": "file-privileges",
+      "case": "app cannot LOAD_FILE showroom",
+      "status": "PASS",
+      "source_id": "AUD-0142",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0518",
+      "category": "file-privileges",
+      "case": "viewer cannot LOAD_FILE showroom",
+      "status": "PASS",
+      "source_id": "AUD-0143",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0519",
+      "category": "file-privileges",
+      "case": "backup cannot LOAD_FILE showroom",
+      "status": "PASS",
+      "source_id": "AUD-0144",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0520",
+      "category": "file-privileges",
+      "case": "migrate cannot LOAD_FILE showroom",
+      "status": "PASS",
+      "source_id": "AUD-0145",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0521",
+      "category": "backup",
+      "case": "Backups are local plaintext: off-device encrypted recovery not configured",
+      "status": "WARN",
+      "source_id": "AUD-0146",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0522",
+      "category": "business-boundary",
+      "case": "Minimum child/payment participation is not enforced: servis",
+      "status": "WARN",
+      "detail": "Observed then rolled back on disposable data.",
+      "source_id": "AUD-0147",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0523",
+      "category": "business-boundary",
+      "case": "Minimum child/payment participation is not enforced: showroom",
+      "status": "WARN",
+      "detail": "Observed then rolled back on disposable data.",
+      "source_id": "AUD-0148",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0524",
+      "category": "network",
+      "case": "Expected local listener responds on 3307",
+      "status": "PASS",
+      "source_id": "AUD-0149",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0525",
+      "category": "network",
+      "case": "Expected local listener responds on 8081",
+      "status": "PASS",
+      "source_id": "AUD-0150",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0526",
+      "category": "network",
+      "case": "OS-wide listener inventory unavailable in execution sandbox",
+      "status": "SKIP",
+      "detail": "SQL bind_address and local HTTP behavior verified; no independent remote host connectivity test.",
+      "source_id": "AUD-0151",
+      "suite": "surfaces"
+    },
+    {
+      "id": "SEC-0527",
+      "category": "preservation",
+      "case": "Active ERD tables and row contents unchanged",
+      "status": "PASS",
+      "source_id": "AUD-0059",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0528",
+      "category": "preservation",
+      "case": "draw.io unchanged",
+      "status": "PASS",
+      "source_id": "AUD-0060",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0529",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php.",
+      "status": "PASS",
+      "source_id": "AUD-0032",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0530",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php%20",
+      "status": "PASS",
+      "source_id": "AUD-0033",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0531",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php::$DATA",
+      "status": "PASS",
+      "source_id": "AUD-0034",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0532",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php%3a%3a%24DATA",
+      "status": "PASS",
+      "source_id": "AUD-0035",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0533",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal //config.inc.php",
+      "status": "PASS",
+      "source_id": "AUD-0036",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0534",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /%2fconfig.inc.php",
+      "status": "PASS",
+      "source_id": "AUD-0037",
+      "suite": "surfaces-regression"
+    },
+    {
+      "id": "SEC-0535",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php;extra",
+      "status": "PASS",
+      "source_id": "AUD-0038",
+      "suite": "surfaces-regression"
+    }
+  ],
+  "limits": [
+    "Case counts include parameterized checks for individual columns/tables; they are not independent exploit families.",
+    "Active tables were empty. Recovery was tested for actual empty backups and populated disposable fixtures.",
+    "All test writes used scratch schemas/accounts. Production schemas, existing data, draw.io and frontend were preserved.",
+    "No whole-application SQL injection, XSS, business authorization, payment gateway or production penetration test: the API is not implemented.",
+    "OS-wide listener visibility was incomplete in this execution environment. MySQL reports loopback binding and expected local connections succeed; remote reachability was not independently tested.",
+    "No stress/availability attack, exhaustive fuzzing, binary exploit attempt, external scanning or proof of absence of vulnerabilities.",
+    "No absolute security guarantee or approval for production use."
+  ]
+}

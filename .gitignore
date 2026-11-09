@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.local
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+
+# Private local database runtime, credentials, logs and backups
+/.tools/
+/.local/
+
+# Python database tooling cache
+__pycache__/
+*.py[cod]

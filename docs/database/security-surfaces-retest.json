@@ -1,0 +1,380 @@
+{
+  "date": "2026-11-08",
+  "run_id": "ubzdmsot",
+  "sections": [
+    "web"
+  ],
+  "duration_seconds": 14.11,
+  "summary": {
+    "PASS": 60,
+    "FAIL": 0,
+    "WARN": 0,
+    "SKIP": 0
+  },
+  "findings": [],
+  "cases": [
+    {
+      "id": "AUD-0001",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0002",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host 127.0.0.1:8081.untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0003",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host localhost",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0004",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host localhost:8081@untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0005",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host 127.0.0.1:8081,untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0006",
+      "category": "http-boundary",
+      "case": "GET rejects Origin http://untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0007",
+      "category": "http-boundary",
+      "case": "POST rejects Origin http://untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0008",
+      "category": "http-boundary",
+      "case": "OPTIONS rejects Origin http://untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0009",
+      "category": "http-boundary",
+      "case": "GET rejects Origin null",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0010",
+      "category": "http-boundary",
+      "case": "POST rejects Origin null",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0011",
+      "category": "http-boundary",
+      "case": "OPTIONS rejects Origin null",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0012",
+      "category": "http-boundary",
+      "case": "GET rejects Origin http://127.0.0.1:8082",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0013",
+      "category": "http-boundary",
+      "case": "POST rejects Origin http://127.0.0.1:8082",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0014",
+      "category": "http-boundary",
+      "case": "OPTIONS rejects Origin http://127.0.0.1:8082",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0015",
+      "category": "http-boundary",
+      "case": "GET rejects Origin https://127.0.0.1:8081",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0016",
+      "category": "http-boundary",
+      "case": "POST rejects Origin https://127.0.0.1:8081",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0017",
+      "category": "http-boundary",
+      "case": "OPTIONS rejects Origin https://127.0.0.1:8081",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0018",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0019",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php/extra",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0020",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /CONFIG.INC.PHP",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0021",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /setup/",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0022",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /vendor/autoload.php",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0023",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /libraries/classes/Config.php",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0024",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /templates/base.twig",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0025",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /.env",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0026",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /.git/config",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0027",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /%2eenv",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0028",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /%2e%2e/.local/mysql/secrets.json",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0029",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /../.local/mysql/secrets.json",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0030",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /..%5c.local%5cmysql%5csecrets.json",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0031",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /%252e%252e/.local/mysql/secrets.json",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0032",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php.",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0033",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php%20",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0034",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php::$DATA",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0035",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php%3a%3a%24DATA",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0036",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal //config.inc.php",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0037",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /%2fconfig.inc.php",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0038",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php;extra",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0039",
+      "category": "http-auth",
+      "case": "Unauthenticated database request redirects to signon",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0040",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 0",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0041",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 14",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0042",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 8",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0043",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 16",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0044",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 10",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0045",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 2055",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0046",
+      "category": "http-auth",
+      "case": "Expired launch token rejected",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0047",
+      "category": "http-auth",
+      "case": "Successful signon returns local 303 redirect",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0048",
+      "category": "http-auth",
+      "case": "Fresh one-time signon displays actual service tables",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0049",
+      "category": "http-auth",
+      "case": "Session ID regenerated after signon",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0050",
+      "category": "http-auth",
+      "case": "Session cookie is HttpOnly and SameSite Strict",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0051",
+      "category": "http-auth",
+      "case": "Launch token cannot be replayed",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0052",
+      "category": "http-headers",
+      "case": "X-Content-Type-Options",
+      "status": "PASS",
+      "detail": "nosniff"
+    },
+    {
+      "id": "AUD-0053",
+      "category": "http-headers",
+      "case": "Referrer-Policy",
+      "status": "PASS",
+      "detail": "no-referrer"
+    },
+    {
+      "id": "AUD-0054",
+      "category": "http-headers",
+      "case": "Cache-Control",
+      "status": "PASS",
+      "detail": "no-store"
+    },
+    {
+      "id": "AUD-0055",
+      "category": "http-headers",
+      "case": "Frame embedding restricted",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0056",
+      "category": "http-auth",
+      "case": "Authorized read-only structure garasi_hobby_showroom",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0057",
+      "category": "http-auth",
+      "case": "Authorized read-only structure garasi_hobby_servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0058",
+      "category": "http-csrf",
+      "case": "Invalid CSRF token rejected before SELECT",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0059",
+      "category": "preservation",
+      "case": "Active ERD tables and row contents unchanged",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0060",
+      "category": "preservation",
+      "case": "draw.io unchanged",
+      "status": "PASS"
+    }
+  ]
+}

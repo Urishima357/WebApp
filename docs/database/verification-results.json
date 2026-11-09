@@ -1,0 +1,46 @@
+{
+  "source": "ERD Garasi Hobby Priok.drawio",
+  "source_sha256": "1431add2c0f128424bcfb6aad142cbb672c649ccdbb6f96bbee8aa63d0616c1f",
+  "databases": [
+    {
+      "database": "garasi_hobby_servis",
+      "table_count": 7,
+      "tables": [
+        "detail_servis",
+        "kendaraan",
+        "mekanik",
+        "nota_servis",
+        "pegawai",
+        "pelanggan",
+        "pembayaran"
+      ],
+      "columns_pk_fk_unique_engine": "PASS",
+      "constraint_checks": [
+        "Servis: FK pelanggan ditegakkan",
+        "Servis: UK nomor polisi ditegakkan",
+        "Servis: satu pembayaran per nota",
+        "Servis: FK detail ke nota ditegakkan"
+      ]
+    },
+    {
+      "database": "garasi_hobby_showroom",
+      "table_count": 5,
+      "tables": [
+        "motor",
+        "pegawai",
+        "pembayaran",
+        "pembeli",
+        "penjualan"
+      ],
+      "columns_pk_fk_unique_engine": "PASS",
+      "constraint_checks": [
+        "Showroom: satu penjualan per motor sesuai 0..1",
+        "Showroom: satu pembayaran per penjualan",
+        "Showroom: UK nomor rangka ditegakkan",
+        "Showroom: FK pembeli ditegakkan"
+      ]
+    }
+  ],
+  "extra_tables": 0,
+  "note": "No data inserted into either active database. Minimum child participation still requires application transactions."
+}

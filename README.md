@@ -4,9 +4,19 @@ Sistem informasi operasional bengkel dan showroom Garasi Hobby, direncanakan seb
 
 ## Status
 
-Repositori saat ini berisi dokumen requirement, referensi desain, dan struktur folder awal. Framework belum diinstal dan aplikasi belum dapat dijalankan. Belum ada dependency, migration, model, endpoint, maupun konfigurasi deployment.
+Frontend responsif **React + TypeScript + Vite** sudah tersedia di [`apps/web`](apps/web/README.md), dengan [revisi visual kedua 9 November 2026](docs/testing/UI-REVISION-02-2026-11-09.md) mengikuti komposisi layar Stitch: panel ringkasan, kartu servis mobile, aset raster tanpa SVG, motion native foto/halaman/dialog. Modul operasional dapat dicoba memakai akun dan data demo lokal. Backend masih kerangka folder: belum ada Laravel terinstal, migration, model, endpoint, maupun deployment.
 
-Stack yang direncanakan: **Laravel API**, **React + TypeScript + Vite**, dan **MySQL Community dengan engine InnoDB**. Backend menggunakan pembagian modul dalam satu aplikasi (modular monolith). Bahasa antarmuka adalah Bahasa Indonesia.
+Stack: **React + TypeScript + Vite** untuk frontend; rencana backend **Laravel API** dan **MySQL Community dengan engine InnoDB**. Backend dirancang modular monolith. Bahasa antarmuka Bahasa Indonesia.
+
+```powershell
+cd apps/web
+npm ci
+npm run dev
+```
+
+Frontend menyediakan login role demo, dashboard, WO, showroom, stok, pelanggan, supplier, penerimaan, POS, pembayaran simulasi, nota A4, kontrol finansial, laporan, audit, dan pengaturan. `npm test` menjalankan pemeriksaan aturan demo; `npm run build` memeriksa TypeScript dan membuat build produksi. Lihat [cakupan dan hasil pemeriksaan](docs/testing/FRONTEND.md).
+
+**Belum untuk produksi:** login tidak memakai kredensial nyata; data tersimpan di browser. Otorisasi server, API, private storage, gateway/webhook dan keamanan transaksi belum terhubung. Jangan memasukkan data pribadi atau pembayaran nyata.
 
 ## Struktur folder
 
@@ -32,7 +42,7 @@ Stack yang direncanakan: **Laravel API**, **React + TypeScript + Vite**, dan **M
 | `scripts/` | Skrip setup dan pemeliharaan saat diperlukan. |
 | `designs/` | Referensi desain dan catatan konversi ERD yang sudah tersedia. |
 
-Direktori kosong berisi `.gitkeep` agar tersimpan di Git. Subfolder internal modul backend dan fitur frontend ditambahkan ketika implementasinya dimulai.
+Direktori backend, kontrak, dan infrastruktur yang masih kosong berisi `.gitkeep`. Frontend berisi implementasi modul, aset lokal, dan pemeriksaan domain demo.
 
 ## Acuan proyek
 
@@ -40,4 +50,4 @@ Direktori kosong berisi `.gitkeep` agar tersimpan di Git. Subfolder internal mod
 - [ERD dan LRS](<ERD Garasi Hobby Priok.drawio>) menjadi referensi model servis dan penjualan; [catatan konversi](designs/erd/CATATAN_KONVERSI.md) menjelaskan bagian yang perlu diselaraskan dengan PRD sebelum menjadi skema aplikasi.
 - [Desain Stitch](designs/stitch/README.md) dan [spesifikasi motion](designs/stitch/MOTION.md) menjadi acuan tampilan.
 
-Target anggaran adalah Rp0. Struktur awal ini tidak memasang layanan atau dependency. Hosting, storage produksi, dan payment gateway belum ditetapkan. Metode pembayaran selisih pada transaksi koreksi tetap menunggu keputusan owner.
+Target anggaran Rp0. Frontend tidak memasang layanan berbayar; dependency runtime hanya React dan React DOM. Hosting, storage produksi, dan payment gateway belum ditetapkan. Metode pembayaran selisih pada transaksi koreksi tetap menunggu keputusan owner; frontend hanya mendemonstrasikan alur tanpa memindahkan dana.

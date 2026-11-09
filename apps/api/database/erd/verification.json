@@ -1,0 +1,28 @@
+[
+  {
+    "database": "garasi_hobby_servis",
+    "table_count": 7,
+    "tables": [
+      "detail_servis",
+      "kendaraan",
+      "mekanik",
+      "nota_servis",
+      "pegawai",
+      "pelanggan",
+      "pembayaran"
+    ],
+    "columns_pk_fk_unique_engine": "PASS"
+  },
+  {
+    "database": "garasi_hobby_showroom",
+    "table_count": 5,
+    "tables": [
+      "motor",
+      "pegawai",
+      "pembayaran",
+      "pembeli",
+      "penjualan"
+    ],
+    "columns_pk_fk_unique_engine": "PASS"
+  }
+]

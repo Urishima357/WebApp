@@ -1,0 +1,975 @@
+{
+  "date": "2026-11-08",
+  "run_id": "zvbnbehy",
+  "sections": [
+    "files",
+    "packages",
+    "web",
+    "recovery",
+    "boundaries",
+    "network"
+  ],
+  "duration_seconds": 94.03,
+  "summary": {
+    "PASS": 149,
+    "FAIL": 0,
+    "WARN": 3,
+    "SKIP": 1
+  },
+  "findings": [
+    {
+      "id": "DBSEC-05",
+      "severity": "MEDIUM",
+      "summary": "Backup recovery works, but backups share the local disk and are not encrypted.",
+      "evidence": "SQL backups restored and compared successfully; ACL protection does not protect against disk theft or disk failure.",
+      "remediation": "Before real customer data: encrypt backups, keep a separate off-device copy, define retention/scheduling and repeat restore drills. Store encryption keys separately.",
+      "status": "OPEN"
+    },
+    {
+      "id": "DBSEC-08",
+      "severity": "MEDIUM",
+      "summary": "Foreign keys do not enforce mandatory child/payment presence.",
+      "evidence": "A service note with no details or payment and a sale with its payment deleted were accepted on test clones.",
+      "remediation": "Enforce creation/deletion through backend transactions and authorization; approve any further SQL enforcement before modifying the ERD implementation.",
+      "status": "OPEN"
+    }
+  ],
+  "cases": [
+    {
+      "id": "AUD-0001",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/secrets.json",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0002",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/my.ini",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0003",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/data/ca-key.pem",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0004",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/data/server-key.pem",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0005",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/phpmyadmin/viewer.json",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0006",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/phpmyadmin/config.php",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0007",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/phpmyadmin/sessions",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0008",
+      "category": "filesystem",
+      "case": "No broad user ACL: apps/api/.env.database.local",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0009",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/security-audit/zvbnbehy",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0010",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/client-admin.cnf",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0011",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/client-app.cnf",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0012",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/client-backup.cnf",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0013",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/client-migrate.cnf",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0014",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby-20261108-120603.sql",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0015",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby-20261108-120900.sql",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0016",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby-20261108-121233.sql",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0017",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby-20261108-121527.sql",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0018",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby-20261108-123306.sql",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0019",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby_servis-20261108-123932.sql",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0020",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby_servis-20261108-131043.sql",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0021",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby_showroom-20261108-123933.sql",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0022",
+      "category": "filesystem",
+      "case": "No broad user ACL: .local/mysql/backups/garasi_hobby_showroom-20261108-131048.sql",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0023",
+      "category": "secret-hygiene",
+      "case": "Private runtime/credentials are not tracked",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0024",
+      "category": "secret-hygiene",
+      "case": "Git ignores .local/mysql/secrets.json",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0025",
+      "category": "secret-hygiene",
+      "case": "Git ignores .local/phpmyadmin/viewer.json",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0026",
+      "category": "secret-hygiene",
+      "case": "Git ignores .tools/php-8.3.36-1/php.exe",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0027",
+      "category": "secret-hygiene",
+      "case": "Git ignores apps/api/.env.database.local",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0028",
+      "category": "secret-hygiene",
+      "case": "Known generated SQL passwords absent from public project files",
+      "status": "PASS",
+      "detail": "116 files scanned; matching paths: []"
+    },
+    {
+      "id": "AUD-0029",
+      "category": "secret-hygiene",
+      "case": "Credential storage is outside PHP document root",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0030",
+      "category": "tls",
+      "case": "Managed admin helper uses VERIFY_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0031",
+      "category": "tls",
+      "case": "Managed admin helper TLS connection works",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0032",
+      "category": "tls",
+      "case": "Managed app helper uses VERIFY_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0033",
+      "category": "tls",
+      "case": "Managed app helper TLS connection works",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0034",
+      "category": "tls",
+      "case": "Managed backup helper uses VERIFY_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0035",
+      "category": "tls",
+      "case": "Managed backup helper TLS connection works",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0036",
+      "category": "tls",
+      "case": "Managed migrate helper uses VERIFY_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0037",
+      "category": "tls",
+      "case": "Managed migrate helper TLS connection works",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0038",
+      "category": "supply-chain",
+      "case": "MySQL archive SHA-256 matches pinned official package",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0039",
+      "category": "supply-chain",
+      "case": "MySQL installed code matches verified archive",
+      "status": "PASS",
+      "detail": "107 code/binary files checked; mismatches: []"
+    },
+    {
+      "id": "AUD-0040",
+      "category": "supply-chain",
+      "case": "PHP archive SHA-256 matches pinned official package",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0041",
+      "category": "supply-chain",
+      "case": "PHP installed code matches verified archive",
+      "status": "PASS",
+      "detail": "67 code/binary files checked; mismatches: []"
+    },
+    {
+      "id": "AUD-0042",
+      "category": "supply-chain",
+      "case": "phpMyAdmin archive SHA-256 matches pinned official package",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0043",
+      "category": "supply-chain",
+      "case": "phpMyAdmin installed code matches verified archive",
+      "status": "PASS",
+      "detail": "2573 code/binary files checked; mismatches: []"
+    },
+    {
+      "id": "AUD-0044",
+      "category": "supply-chain",
+      "case": "MySQL archive Oracle GPG signature and pinned signer",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0045",
+      "category": "supply-chain",
+      "case": "PHP runtime pinned version",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0046",
+      "category": "php-hardening",
+      "case": "Session strict mode on; upload progress, URL include, display errors and local infile off",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0047",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0048",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host 127.0.0.1:8081.untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0049",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host localhost",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0050",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host localhost:8081@untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0051",
+      "category": "http-boundary",
+      "case": "Reject untrusted Host 127.0.0.1:8081,untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0052",
+      "category": "http-boundary",
+      "case": "GET rejects Origin http://untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0053",
+      "category": "http-boundary",
+      "case": "POST rejects Origin http://untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0054",
+      "category": "http-boundary",
+      "case": "OPTIONS rejects Origin http://untrusted.example",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0055",
+      "category": "http-boundary",
+      "case": "GET rejects Origin null",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0056",
+      "category": "http-boundary",
+      "case": "POST rejects Origin null",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0057",
+      "category": "http-boundary",
+      "case": "OPTIONS rejects Origin null",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0058",
+      "category": "http-boundary",
+      "case": "GET rejects Origin http://127.0.0.1:8082",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0059",
+      "category": "http-boundary",
+      "case": "POST rejects Origin http://127.0.0.1:8082",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0060",
+      "category": "http-boundary",
+      "case": "OPTIONS rejects Origin http://127.0.0.1:8082",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0061",
+      "category": "http-boundary",
+      "case": "GET rejects Origin https://127.0.0.1:8081",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0062",
+      "category": "http-boundary",
+      "case": "POST rejects Origin https://127.0.0.1:8081",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0063",
+      "category": "http-boundary",
+      "case": "OPTIONS rejects Origin https://127.0.0.1:8081",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0064",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0065",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /config.inc.php/extra",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0066",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /CONFIG.INC.PHP",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0067",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /setup/",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0068",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /vendor/autoload.php",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0069",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /libraries/classes/Config.php",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0070",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /templates/base.twig",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0071",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /.env",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0072",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /.git/config",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0073",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /%2eenv",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0074",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /%2e%2e/.local/mysql/secrets.json",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0075",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /../.local/mysql/secrets.json",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0076",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /..%5c.local%5cmysql%5csecrets.json",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0077",
+      "category": "http-boundary",
+      "case": "Block protected/path traversal /%252e%252e/.local/mysql/secrets.json",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0078",
+      "category": "http-auth",
+      "case": "Unauthenticated database request redirects to signon",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0079",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 0",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0080",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 14",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0081",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 8",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0082",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 16",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0083",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 10",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0084",
+      "category": "http-auth",
+      "case": "Reject invalid launch token variant 2055",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0085",
+      "category": "http-auth",
+      "case": "Expired launch token rejected",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0086",
+      "category": "http-auth",
+      "case": "Successful signon returns local 303 redirect",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0087",
+      "category": "http-auth",
+      "case": "Fresh one-time signon displays actual service tables",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0088",
+      "category": "http-auth",
+      "case": "Session ID regenerated after signon",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0089",
+      "category": "http-auth",
+      "case": "Session cookie is HttpOnly and SameSite Strict",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0090",
+      "category": "http-auth",
+      "case": "Launch token cannot be replayed",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0091",
+      "category": "http-headers",
+      "case": "X-Content-Type-Options",
+      "status": "PASS",
+      "detail": "nosniff"
+    },
+    {
+      "id": "AUD-0092",
+      "category": "http-headers",
+      "case": "Referrer-Policy",
+      "status": "PASS",
+      "detail": "no-referrer"
+    },
+    {
+      "id": "AUD-0093",
+      "category": "http-headers",
+      "case": "Cache-Control",
+      "status": "PASS",
+      "detail": "no-store"
+    },
+    {
+      "id": "AUD-0094",
+      "category": "http-headers",
+      "case": "Frame embedding restricted",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0095",
+      "category": "http-auth",
+      "case": "Authorized read-only structure garasi_hobby_showroom",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0096",
+      "category": "http-auth",
+      "case": "Authorized read-only structure garasi_hobby_servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0097",
+      "category": "http-csrf",
+      "case": "Invalid CSRF token rejected before SELECT",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0098",
+      "category": "backup",
+      "case": "Backup SHA-256 sidecar garasi_hobby_servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0099",
+      "category": "recovery",
+      "case": "Restore real backup garasi_hobby_servis into disposable target",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0100",
+      "category": "recovery",
+      "case": "Restored table set garasi_hobby_servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0101",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.detail_servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0102",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.kendaraan",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0103",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.mekanik",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0104",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.nota_servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0105",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.pegawai",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0106",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.pelanggan",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0107",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_servis.pembayaran",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0108",
+      "category": "backup",
+      "case": "Backup SHA-256 sidecar garasi_hobby_showroom",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0109",
+      "category": "recovery",
+      "case": "Restore real backup garasi_hobby_showroom into disposable target",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0110",
+      "category": "recovery",
+      "case": "Restored table set garasi_hobby_showroom",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0111",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_showroom.motor",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0112",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_showroom.pegawai",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0113",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_showroom.pembayaran",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0114",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_showroom.pembeli",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0115",
+      "category": "recovery",
+      "case": "Identical restored data and DDL garasi_hobby_showroom.penjualan",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0116",
+      "category": "recovery",
+      "case": "Readonly backup user exports populated servis fixture",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0117",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.pelanggan",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0118",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.kendaraan",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0119",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.nota_servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0120",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.mekanik",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0121",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.pegawai",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0122",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.detail_servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0123",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip servis.pembayaran",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0124",
+      "category": "file-privileges",
+      "case": "app cannot SELECT INTO OUTFILE servis",
+      "status": "PASS",
+      "detail": "MySQL error 1227"
+    },
+    {
+      "id": "AUD-0125",
+      "category": "file-privileges",
+      "case": "viewer cannot SELECT INTO OUTFILE servis",
+      "status": "PASS",
+      "detail": "MySQL error 1227"
+    },
+    {
+      "id": "AUD-0126",
+      "category": "file-privileges",
+      "case": "backup cannot SELECT INTO OUTFILE servis",
+      "status": "PASS",
+      "detail": "MySQL error 1227"
+    },
+    {
+      "id": "AUD-0127",
+      "category": "file-privileges",
+      "case": "migrate cannot SELECT INTO OUTFILE servis",
+      "status": "PASS",
+      "detail": "MySQL error 1227"
+    },
+    {
+      "id": "AUD-0128",
+      "category": "file-privileges",
+      "case": "app cannot LOAD_FILE servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0129",
+      "category": "file-privileges",
+      "case": "viewer cannot LOAD_FILE servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0130",
+      "category": "file-privileges",
+      "case": "backup cannot LOAD_FILE servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0131",
+      "category": "file-privileges",
+      "case": "migrate cannot LOAD_FILE servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0132",
+      "category": "recovery",
+      "case": "Readonly backup user exports populated showroom fixture",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0133",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip showroom.pembeli",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0134",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip showroom.penjualan",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0135",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip showroom.motor",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0136",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip showroom.pegawai",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0137",
+      "category": "recovery",
+      "case": "Nonempty fixture round-trip showroom.pembayaran",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0138",
+      "category": "file-privileges",
+      "case": "app cannot SELECT INTO OUTFILE showroom",
+      "status": "PASS",
+      "detail": "MySQL error 1227"
+    },
+    {
+      "id": "AUD-0139",
+      "category": "file-privileges",
+      "case": "viewer cannot SELECT INTO OUTFILE showroom",
+      "status": "PASS",
+      "detail": "MySQL error 1227"
+    },
+    {
+      "id": "AUD-0140",
+      "category": "file-privileges",
+      "case": "backup cannot SELECT INTO OUTFILE showroom",
+      "status": "PASS",
+      "detail": "MySQL error 1227"
+    },
+    {
+      "id": "AUD-0141",
+      "category": "file-privileges",
+      "case": "migrate cannot SELECT INTO OUTFILE showroom",
+      "status": "PASS",
+      "detail": "MySQL error 1227"
+    },
+    {
+      "id": "AUD-0142",
+      "category": "file-privileges",
+      "case": "app cannot LOAD_FILE showroom",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0143",
+      "category": "file-privileges",
+      "case": "viewer cannot LOAD_FILE showroom",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0144",
+      "category": "file-privileges",
+      "case": "backup cannot LOAD_FILE showroom",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0145",
+      "category": "file-privileges",
+      "case": "migrate cannot LOAD_FILE showroom",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0146",
+      "category": "backup",
+      "case": "Backups are local plaintext: off-device encrypted recovery not configured",
+      "status": "WARN"
+    },
+    {
+      "id": "AUD-0147",
+      "category": "business-boundary",
+      "case": "Minimum child/payment participation is not enforced: servis",
+      "status": "WARN",
+      "detail": "Observed then rolled back on disposable data."
+    },
+    {
+      "id": "AUD-0148",
+      "category": "business-boundary",
+      "case": "Minimum child/payment participation is not enforced: showroom",
+      "status": "WARN",
+      "detail": "Observed then rolled back on disposable data."
+    },
+    {
+      "id": "AUD-0149",
+      "category": "network",
+      "case": "Expected local listener responds on 3307",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0150",
+      "category": "network",
+      "case": "Expected local listener responds on 8081",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0151",
+      "category": "network",
+      "case": "OS-wide listener inventory unavailable in execution sandbox",
+      "status": "SKIP",
+      "detail": "SQL bind_address and local HTTP behavior verified; no independent remote host connectivity test."
+    },
+    {
+      "id": "AUD-0152",
+      "category": "preservation",
+      "case": "Active ERD tables and row contents unchanged",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0153",
+      "category": "preservation",
+      "case": "draw.io unchanged",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,595 @@
+{
+  "source": "ERD Garasi Hobby Priok.drawio",
+  "source_sha256": "1431add2c0f128424bcfb6aad142cbb672c649ccdbb6f96bbee8aa63d0616c1f",
+  "databases": {
+    "garasi_hobby_servis": {
+      "pelanggan": {
+        "fields": [
+          {
+            "name": "id_pelanggan",
+            "source_type": "int",
+            "key": "PK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "nama",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "kontak",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          }
+        ],
+        "foreign_keys": {},
+        "unique": []
+      },
+      "kendaraan": {
+        "fields": [
+          {
+            "name": "id_kendaraan",
+            "source_type": "int",
+            "key": "PK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "id_pelanggan",
+            "source_type": "int",
+            "key": "FK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "no_polisi",
+            "source_type": "string",
+            "key": "UK",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "merek",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "tipe",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "tahun",
+            "source_type": "int",
+            "key": "",
+            "sql_type": "INT"
+          },
+          {
+            "name": "warna",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          }
+        ],
+        "foreign_keys": {
+          "id_pelanggan": [
+            "pelanggan",
+            "id_pelanggan"
+          ]
+        },
+        "unique": [
+          "no_polisi"
+        ]
+      },
+      "nota_servis": {
+        "fields": [
+          {
+            "name": "id_nota",
+            "source_type": "int",
+            "key": "PK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "id_kendaraan",
+            "source_type": "int",
+            "key": "FK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "id_mekanik",
+            "source_type": "int",
+            "key": "FK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "id_pegawai",
+            "source_type": "int",
+            "key": "FK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "no_work_order",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "tanggal",
+            "source_type": "datetime",
+            "key": "",
+            "sql_type": "DATETIME"
+          },
+          {
+            "name": "odometer",
+            "source_type": "int",
+            "key": "",
+            "sql_type": "INT"
+          },
+          {
+            "name": "keluhan",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "subtotal",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          },
+          {
+            "name": "diskon",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          },
+          {
+            "name": "total",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          }
+        ],
+        "foreign_keys": {
+          "id_kendaraan": [
+            "kendaraan",
+            "id_kendaraan"
+          ],
+          "id_mekanik": [
+            "mekanik",
+            "id_mekanik"
+          ],
+          "id_pegawai": [
+            "pegawai",
+            "id_pegawai"
+          ]
+        },
+        "unique": []
+      },
+      "mekanik": {
+        "fields": [
+          {
+            "name": "id_mekanik",
+            "source_type": "int",
+            "key": "PK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "nama_mekanik",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          }
+        ],
+        "foreign_keys": {},
+        "unique": []
+      },
+      "pegawai": {
+        "fields": [
+          {
+            "name": "id_pegawai",
+            "source_type": "int",
+            "key": "PK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "nama_pegawai",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "jabatan",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          }
+        ],
+        "foreign_keys": {},
+        "unique": []
+      },
+      "detail_servis": {
+        "fields": [
+          {
+            "name": "id_detail",
+            "source_type": "int",
+            "key": "PK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "id_nota",
+            "source_type": "int",
+            "key": "FK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "jenis",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "uraian",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "qty",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          },
+          {
+            "name": "harga",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          },
+          {
+            "name": "diskon",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          },
+          {
+            "name": "jumlah",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          }
+        ],
+        "foreign_keys": {
+          "id_nota": [
+            "nota_servis",
+            "id_nota"
+          ]
+        },
+        "unique": []
+      },
+      "pembayaran": {
+        "fields": [
+          {
+            "name": "id_pembayaran",
+            "source_type": "int",
+            "key": "PK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "id_nota",
+            "source_type": "int",
+            "key": "FK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "metode",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "diterima",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          },
+          {
+            "name": "kembalian",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          },
+          {
+            "name": "tanggal_konfirmasi",
+            "source_type": "datetime",
+            "key": "",
+            "sql_type": "DATETIME"
+          }
+        ],
+        "foreign_keys": {
+          "id_nota": [
+            "nota_servis",
+            "id_nota"
+          ]
+        },
+        "unique": [
+          "id_nota"
+        ]
+      }
+    },
+    "garasi_hobby_showroom": {
+      "pembeli": {
+        "fields": [
+          {
+            "name": "id_pembeli",
+            "source_type": "int",
+            "key": "PK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "nama",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "kontak",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "alamat",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          }
+        ],
+        "foreign_keys": {},
+        "unique": []
+      },
+      "penjualan": {
+        "fields": [
+          {
+            "name": "id_penjualan",
+            "source_type": "int",
+            "key": "PK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "id_pembeli",
+            "source_type": "int",
+            "key": "FK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "id_motor",
+            "source_type": "int",
+            "key": "FK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "id_pegawai",
+            "source_type": "int",
+            "key": "FK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "tanggal_transaksi",
+            "source_type": "datetime",
+            "key": "",
+            "sql_type": "DATETIME"
+          },
+          {
+            "name": "subtotal",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          },
+          {
+            "name": "diskon",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          },
+          {
+            "name": "alasan_diskon",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "total",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          },
+          {
+            "name": "status",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          }
+        ],
+        "foreign_keys": {
+          "id_pembeli": [
+            "pembeli",
+            "id_pembeli"
+          ],
+          "id_motor": [
+            "motor",
+            "id_motor"
+          ],
+          "id_pegawai": [
+            "pegawai",
+            "id_pegawai"
+          ]
+        },
+        "unique": [
+          "id_motor"
+        ]
+      },
+      "motor": {
+        "fields": [
+          {
+            "name": "id_motor",
+            "source_type": "int",
+            "key": "PK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "kode_inventaris",
+            "source_type": "string",
+            "key": "UK",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "no_polisi",
+            "source_type": "string",
+            "key": "UK",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "merek",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "tipe",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "tahun",
+            "source_type": "int",
+            "key": "",
+            "sql_type": "INT"
+          },
+          {
+            "name": "warna",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "no_rangka",
+            "source_type": "string",
+            "key": "UK",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "no_mesin",
+            "source_type": "string",
+            "key": "UK",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "harga_jual",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          },
+          {
+            "name": "status",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          }
+        ],
+        "foreign_keys": {},
+        "unique": [
+          "kode_inventaris",
+          "no_polisi",
+          "no_rangka",
+          "no_mesin"
+        ]
+      },
+      "pegawai": {
+        "fields": [
+          {
+            "name": "id_pegawai",
+            "source_type": "int",
+            "key": "PK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "nama_pegawai",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "jabatan",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          }
+        ],
+        "foreign_keys": {},
+        "unique": []
+      },
+      "pembayaran": {
+        "fields": [
+          {
+            "name": "id_pembayaran",
+            "source_type": "int",
+            "key": "PK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "id_penjualan",
+            "source_type": "int",
+            "key": "FK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "id_pegawai",
+            "source_type": "int",
+            "key": "FK",
+            "sql_type": "INT UNSIGNED"
+          },
+          {
+            "name": "metode",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "jumlah_diterima",
+            "source_type": "decimal",
+            "key": "",
+            "sql_type": "DECIMAL(18,2)"
+          },
+          {
+            "name": "referensi",
+            "source_type": "string",
+            "key": "",
+            "sql_type": "VARCHAR(255)"
+          },
+          {
+            "name": "tanggal_konfirmasi",
+            "source_type": "datetime",
+            "key": "",
+            "sql_type": "DATETIME"
+          }
+        ],
+        "foreign_keys": {
+          "id_penjualan": [
+            "penjualan",
+            "id_penjualan"
+          ],
+          "id_pegawai": [
+            "pegawai",
+            "id_pegawai"
+          ]
+        },
+        "unique": [
+          "id_penjualan"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,2599 @@
+{
+  "date": "2026-11-08",
+  "scope": [
+    "garasi_hobby_servis",
+    "garasi_hobby_showroom"
+  ],
+  "run_id": "fiqnatue",
+  "duration_seconds": 53.62,
+  "summary": {
+    "PASS": 370,
+    "FAIL": 0,
+    "WARN": 5,
+    "SKIP": 0
+  },
+  "findings": [
+    {
+      "id": "DBSEC-01",
+      "severity": "MEDIUM",
+      "before": "Application, backup and migration accounts retained privileges on the obsolete PRD database.",
+      "repair": "Removed legacy schema/table/column grants and scoped service accounts to the two ERD databases.",
+      "status": "FIXED"
+    },
+    {
+      "id": "DBSEC-02",
+      "severity": "MEDIUM",
+      "before": "phpMyAdmin viewer had no failed-login lock policy.",
+      "repair": "Configured five failed attempts, one-day account lock, TLS and five concurrent connections; persisted in setup code.",
+      "status": "FIXED"
+    },
+    {
+      "id": "DBSEC-03",
+      "severity": "MEDIUM",
+      "summary": "ERD-only schema does not validate financial arithmetic/sign/quantity.",
+      "evidence": [
+        "Negative service total accepted by ERD-only schema",
+        "Zero service quantity accepted",
+        "Negative sale price accepted by ERD-only schema",
+        "Sale total can differ from subtotal and discount"
+      ],
+      "remediation": "Add approved column CHECKs and backend validation/transaction rules after business review; keep the 7+5 table model unchanged.",
+      "status": "OPEN"
+    },
+    {
+      "id": "DBSEC-04",
+      "severity": "MEDIUM",
+      "summary": "A compromised application SQL credential can bypass session FK checks.",
+      "evidence": "Confirmed on a clone with the actual runtime principal, then rolled back.",
+      "remediation": "Keep SQL credentials in backend only; parameterize queries, forbid arbitrary SQL APIs, protect the OS and rotate credentials if exposed. Full mitigation requires a reviewed write API/stored-procedure privilege model.",
+      "status": "OPEN"
+    }
+  ],
+  "cases": [
+    {
+      "id": "AUD-0001",
+      "category": "server",
+      "case": "Loopback only",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0002",
+      "category": "server",
+      "case": "TLS mandatory",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0003",
+      "category": "server",
+      "case": "LOCAL INFILE disabled",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0004",
+      "category": "server",
+      "case": "Server file export/import disabled",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0005",
+      "category": "server",
+      "case": "Name resolution disabled",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0006",
+      "category": "server",
+      "case": "UTC server timezone",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0007",
+      "category": "server",
+      "case": "InnoDB default",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0008",
+      "category": "server",
+      "case": "No anonymous SQL user",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0009",
+      "category": "server",
+      "case": "No wildcard/remote SQL accounts",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0010",
+      "category": "server",
+      "case": "System SQL users locked",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0011",
+      "category": "server",
+      "case": "No empty auth hash for interactive users",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0012",
+      "category": "server",
+      "case": "X Plugin inactive",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0013",
+      "category": "server",
+      "case": "SQL mode STRICT_TRANS_TABLES",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0014",
+      "category": "server",
+      "case": "SQL mode NO_ZERO_DATE",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0015",
+      "category": "server",
+      "case": "SQL mode NO_ZERO_IN_DATE",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0016",
+      "category": "server",
+      "case": "SQL mode ERROR_FOR_DIVISION_BY_ZERO",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0017",
+      "category": "server",
+      "case": "SQL mode NO_ENGINE_SUBSTITUTION",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0018",
+      "category": "server",
+      "case": "TLS 1.2/1.3 allowed only",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0019",
+      "category": "accounts",
+      "case": "app database scope is exactly the two ERD databases",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0020",
+      "category": "accounts",
+      "case": "app has no global admin privilege",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0021",
+      "category": "accounts",
+      "case": "app cannot delegate grants",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0022",
+      "category": "accounts",
+      "case": "app uses caching_sha2_password",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0023",
+      "category": "accounts",
+      "case": "app requires encrypted transport",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0024",
+      "category": "accounts",
+      "case": "app connection limit",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0025",
+      "category": "accounts",
+      "case": "app failed-login policy",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0026",
+      "category": "privileges",
+      "case": "app cannot read MySQL auth tables",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0027",
+      "category": "privileges",
+      "case": "app cannot access archived PRD data",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0028",
+      "category": "privileges",
+      "case": "app can read garasi_hobby_servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0029",
+      "category": "privileges",
+      "case": "app can read garasi_hobby_showroom",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0030",
+      "category": "accounts",
+      "case": "backup database scope is exactly the two ERD databases",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0031",
+      "category": "accounts",
+      "case": "backup has no global admin privilege",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0032",
+      "category": "accounts",
+      "case": "backup cannot delegate grants",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0033",
+      "category": "accounts",
+      "case": "backup uses caching_sha2_password",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0034",
+      "category": "accounts",
+      "case": "backup requires encrypted transport",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0035",
+      "category": "accounts",
+      "case": "backup connection limit",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0036",
+      "category": "accounts",
+      "case": "backup failed-login policy",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0037",
+      "category": "privileges",
+      "case": "backup cannot read MySQL auth tables",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0038",
+      "category": "privileges",
+      "case": "backup cannot access archived PRD data",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0039",
+      "category": "privileges",
+      "case": "backup can read garasi_hobby_servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0040",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0041",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0042",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0043",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0044",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0045",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0046",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0047",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0048",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0049",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0050",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0051",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0052",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0053",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0054",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0055",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0056",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0057",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0058",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0059",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0060",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0061",
+      "category": "privileges",
+      "case": "backup can read garasi_hobby_showroom",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0062",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0063",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0064",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0065",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0066",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0067",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0068",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0069",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0070",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0071",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0072",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0073",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0074",
+      "category": "privileges",
+      "case": "backup cannot UPDATE garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0075",
+      "category": "privileges",
+      "case": "backup cannot DELETE garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0076",
+      "category": "privileges",
+      "case": "backup cannot INSERT garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0077",
+      "category": "accounts",
+      "case": "migrate database scope is exactly the two ERD databases",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0078",
+      "category": "accounts",
+      "case": "migrate has no global admin privilege",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0079",
+      "category": "accounts",
+      "case": "migrate cannot delegate grants",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0080",
+      "category": "accounts",
+      "case": "migrate uses caching_sha2_password",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0081",
+      "category": "accounts",
+      "case": "migrate requires encrypted transport",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0082",
+      "category": "accounts",
+      "case": "migrate connection limit",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0083",
+      "category": "accounts",
+      "case": "migrate failed-login policy",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0084",
+      "category": "privileges",
+      "case": "migrate cannot read MySQL auth tables",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0085",
+      "category": "privileges",
+      "case": "migrate cannot access archived PRD data",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0086",
+      "category": "privileges",
+      "case": "migrate can read garasi_hobby_servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0087",
+      "category": "privileges",
+      "case": "migrate can read garasi_hobby_showroom",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0088",
+      "category": "accounts",
+      "case": "viewer database scope is exactly the two ERD databases",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0089",
+      "category": "accounts",
+      "case": "viewer has no global admin privilege",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0090",
+      "category": "accounts",
+      "case": "viewer cannot delegate grants",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0091",
+      "category": "accounts",
+      "case": "viewer uses caching_sha2_password",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0092",
+      "category": "accounts",
+      "case": "viewer requires encrypted transport",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0093",
+      "category": "accounts",
+      "case": "viewer connection limit",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0094",
+      "category": "accounts",
+      "case": "viewer failed-login policy",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0095",
+      "category": "privileges",
+      "case": "viewer cannot read MySQL auth tables",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0096",
+      "category": "privileges",
+      "case": "viewer cannot access archived PRD data",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0097",
+      "category": "privileges",
+      "case": "viewer can read garasi_hobby_servis",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0098",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0099",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0100",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0101",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0102",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0103",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0104",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0105",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0106",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0107",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0108",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0109",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0110",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0111",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0112",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0113",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0114",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0115",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0116",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0117",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0118",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0119",
+      "category": "privileges",
+      "case": "viewer can read garasi_hobby_showroom",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0120",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0121",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0122",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0123",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0124",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0125",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0126",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0127",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0128",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0129",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0130",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0131",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0132",
+      "category": "privileges",
+      "case": "viewer cannot UPDATE garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0133",
+      "category": "privileges",
+      "case": "viewer cannot DELETE garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0134",
+      "category": "privileges",
+      "case": "viewer cannot INSERT garasi_hobby_showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0135",
+      "category": "tls",
+      "case": "admin verifies certificate hostname and CA",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0136",
+      "category": "tls",
+      "case": "admin rejects plaintext",
+      "status": "PASS",
+      "detail": "MySQL error 1045"
+    },
+    {
+      "id": "AUD-0137",
+      "category": "tls",
+      "case": "app verifies certificate hostname and CA",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0138",
+      "category": "tls",
+      "case": "app rejects plaintext",
+      "status": "PASS",
+      "detail": "MySQL error 1045"
+    },
+    {
+      "id": "AUD-0139",
+      "category": "tls",
+      "case": "backup verifies certificate hostname and CA",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0140",
+      "category": "tls",
+      "case": "backup rejects plaintext",
+      "status": "PASS",
+      "detail": "MySQL error 1045"
+    },
+    {
+      "id": "AUD-0141",
+      "category": "tls",
+      "case": "migrate verifies certificate hostname and CA",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0142",
+      "category": "tls",
+      "case": "migrate rejects plaintext",
+      "status": "PASS",
+      "detail": "MySQL error 1045"
+    },
+    {
+      "id": "AUD-0143",
+      "category": "tls",
+      "case": "viewer verifies certificate hostname and CA",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0144",
+      "category": "tls",
+      "case": "viewer rejects plaintext",
+      "status": "PASS",
+      "detail": "MySQL error 1045"
+    },
+    {
+      "id": "AUD-0145",
+      "category": "tls",
+      "case": "Negotiation TLSv1.2",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0146",
+      "category": "tls",
+      "case": "Negotiation TLSv1.3",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0147",
+      "category": "tls",
+      "case": "localhost hostname verified",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0148",
+      "category": "tls",
+      "case": "Untrusted CA rejected",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0149",
+      "category": "tls",
+      "case": "Server chain and loopback SAN valid",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0150",
+      "category": "tls",
+      "case": "Certificate remains valid beyond 30 days",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0151",
+      "category": "authentication",
+      "case": "Disposable auth account correct password works",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0152",
+      "category": "authentication",
+      "case": "Disposable bad password attempt 1 rejected",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0153",
+      "category": "authentication",
+      "case": "Disposable bad password attempt 2 rejected",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0154",
+      "category": "authentication",
+      "case": "Disposable bad password attempt 3 rejected",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0155",
+      "category": "authentication",
+      "case": "Failed-login threshold blocks correct password until unlock",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0156",
+      "category": "authentication",
+      "case": "Administrative unlock restores account",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0157",
+      "category": "authentication",
+      "case": "SQL connection cap enforced",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0158",
+      "category": "authentication",
+      "case": "Connection capacity restored after clients close",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0159",
+      "category": "schema",
+      "case": "garasi_hobby_servis exact ERD schema",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0160",
+      "category": "constraints",
+      "case": "servis.pelanggan duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0161",
+      "category": "input-bounds",
+      "case": "servis.pelanggan.nama NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0162",
+      "category": "input-bounds",
+      "case": "servis.pelanggan.nama rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0163",
+      "category": "input-bounds",
+      "case": "servis.pelanggan.kontak NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0164",
+      "category": "input-bounds",
+      "case": "servis.pelanggan.kontak rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0165",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0166",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0167",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.pelanggan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0168",
+      "category": "constraints",
+      "case": "servis.kendaraan duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0169",
+      "category": "constraints",
+      "case": "servis.kendaraan.id_pelanggan missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452"
+    },
+    {
+      "id": "AUD-0170",
+      "category": "constraints",
+      "case": "servis.kendaraan.id_pelanggan NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0171",
+      "category": "constraints",
+      "case": "servis.kendaraan.no_polisi unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0172",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.no_polisi NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0173",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.no_polisi rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0174",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.merek NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0175",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.merek rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0176",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.tipe NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0177",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.tipe rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0178",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.tahun NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0179",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.tahun rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0180",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.warna NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0181",
+      "category": "input-bounds",
+      "case": "servis.kendaraan.warna rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0182",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0183",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0184",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.kendaraan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0185",
+      "category": "constraints",
+      "case": "servis.nota_servis duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0186",
+      "category": "constraints",
+      "case": "servis.nota_servis.id_kendaraan missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452"
+    },
+    {
+      "id": "AUD-0187",
+      "category": "constraints",
+      "case": "servis.nota_servis.id_kendaraan NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0188",
+      "category": "constraints",
+      "case": "servis.nota_servis.id_mekanik missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452"
+    },
+    {
+      "id": "AUD-0189",
+      "category": "constraints",
+      "case": "servis.nota_servis.id_mekanik NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0190",
+      "category": "constraints",
+      "case": "servis.nota_servis.id_pegawai missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452"
+    },
+    {
+      "id": "AUD-0191",
+      "category": "constraints",
+      "case": "servis.nota_servis.id_pegawai NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0192",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.no_work_order NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0193",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.no_work_order rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0194",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.tanggal NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0195",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.tanggal rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1292"
+    },
+    {
+      "id": "AUD-0196",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.odometer NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0197",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.odometer rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0198",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.keluhan NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0199",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.keluhan rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0200",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.subtotal NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0201",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.subtotal rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0202",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.diskon NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0203",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.diskon rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0204",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.total NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0205",
+      "category": "input-bounds",
+      "case": "servis.nota_servis.total rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0206",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0207",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0208",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.nota_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0209",
+      "category": "constraints",
+      "case": "servis.mekanik duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0210",
+      "category": "input-bounds",
+      "case": "servis.mekanik.nama_mekanik NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0211",
+      "category": "input-bounds",
+      "case": "servis.mekanik.nama_mekanik rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0212",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0213",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0214",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.mekanik",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0215",
+      "category": "constraints",
+      "case": "servis.pegawai duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0216",
+      "category": "input-bounds",
+      "case": "servis.pegawai.nama_pegawai NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0217",
+      "category": "input-bounds",
+      "case": "servis.pegawai.nama_pegawai rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0218",
+      "category": "input-bounds",
+      "case": "servis.pegawai.jabatan NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0219",
+      "category": "input-bounds",
+      "case": "servis.pegawai.jabatan rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0220",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0221",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0222",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0223",
+      "category": "constraints",
+      "case": "servis.detail_servis duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0224",
+      "category": "constraints",
+      "case": "servis.detail_servis.id_nota missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452"
+    },
+    {
+      "id": "AUD-0225",
+      "category": "constraints",
+      "case": "servis.detail_servis.id_nota NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0226",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.jenis NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0227",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.jenis rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0228",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.uraian NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0229",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.uraian rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0230",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.qty NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0231",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.qty rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0232",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.harga NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0233",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.harga rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0234",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.diskon NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0235",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.diskon rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0236",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.jumlah NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0237",
+      "category": "input-bounds",
+      "case": "servis.detail_servis.jumlah rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0238",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0239",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0240",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.detail_servis",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0241",
+      "category": "constraints",
+      "case": "servis.pembayaran duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0242",
+      "category": "constraints",
+      "case": "servis.pembayaran.id_nota missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452"
+    },
+    {
+      "id": "AUD-0243",
+      "category": "constraints",
+      "case": "servis.pembayaran.id_nota NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0244",
+      "category": "constraints",
+      "case": "servis.pembayaran.id_nota unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0245",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.metode NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0246",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.metode rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0247",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.diterima NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0248",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.diterima rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0249",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.kembalian NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0250",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.kembalian rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0251",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.tanggal_konfirmasi NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0252",
+      "category": "input-bounds",
+      "case": "servis.pembayaran.tanggal_konfirmasi rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1292"
+    },
+    {
+      "id": "AUD-0253",
+      "category": "ddl",
+      "case": "app cannot ALTER servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0254",
+      "category": "ddl",
+      "case": "backup cannot ALTER servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0255",
+      "category": "ddl",
+      "case": "viewer cannot ALTER servis.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0256",
+      "category": "constraints",
+      "case": "servis.nota_servis parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0257",
+      "category": "constraints",
+      "case": "servis.nota_servis parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0258",
+      "category": "constraints",
+      "case": "servis.kendaraan parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0259",
+      "category": "constraints",
+      "case": "servis.kendaraan parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0260",
+      "category": "constraints",
+      "case": "servis.pegawai parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0261",
+      "category": "constraints",
+      "case": "servis.pegawai parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0262",
+      "category": "constraints",
+      "case": "servis.pelanggan parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0263",
+      "category": "constraints",
+      "case": "servis.pelanggan parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0264",
+      "category": "constraints",
+      "case": "servis.mekanik parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0265",
+      "category": "constraints",
+      "case": "servis.mekanik parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0266",
+      "category": "schema",
+      "case": "garasi_hobby_showroom exact ERD schema",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0267",
+      "category": "constraints",
+      "case": "showroom.pembeli duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0268",
+      "category": "input-bounds",
+      "case": "showroom.pembeli.nama NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0269",
+      "category": "input-bounds",
+      "case": "showroom.pembeli.nama rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0270",
+      "category": "input-bounds",
+      "case": "showroom.pembeli.kontak NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0271",
+      "category": "input-bounds",
+      "case": "showroom.pembeli.kontak rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0272",
+      "category": "input-bounds",
+      "case": "showroom.pembeli.alamat NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0273",
+      "category": "input-bounds",
+      "case": "showroom.pembeli.alamat rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0274",
+      "category": "ddl",
+      "case": "app cannot ALTER showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0275",
+      "category": "ddl",
+      "case": "backup cannot ALTER showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0276",
+      "category": "ddl",
+      "case": "viewer cannot ALTER showroom.pembeli",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0277",
+      "category": "constraints",
+      "case": "showroom.penjualan duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0278",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_pembeli missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452"
+    },
+    {
+      "id": "AUD-0279",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_pembeli NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0280",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_motor missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452"
+    },
+    {
+      "id": "AUD-0281",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_motor NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0282",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_pegawai missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452"
+    },
+    {
+      "id": "AUD-0283",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_pegawai NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0284",
+      "category": "constraints",
+      "case": "showroom.penjualan.id_motor unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0285",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.tanggal_transaksi NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0286",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.tanggal_transaksi rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1292"
+    },
+    {
+      "id": "AUD-0287",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.subtotal NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0288",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.subtotal rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0289",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.diskon NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0290",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.diskon rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0291",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.alasan_diskon NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0292",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.alasan_diskon rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0293",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.total NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0294",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.total rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0295",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.status NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0296",
+      "category": "input-bounds",
+      "case": "showroom.penjualan.status rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0297",
+      "category": "ddl",
+      "case": "app cannot ALTER showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0298",
+      "category": "ddl",
+      "case": "backup cannot ALTER showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0299",
+      "category": "ddl",
+      "case": "viewer cannot ALTER showroom.penjualan",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0300",
+      "category": "constraints",
+      "case": "showroom.motor duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0301",
+      "category": "constraints",
+      "case": "showroom.motor.no_polisi unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0302",
+      "category": "constraints",
+      "case": "showroom.motor.kode_inventaris unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0303",
+      "category": "constraints",
+      "case": "showroom.motor.no_rangka unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0304",
+      "category": "constraints",
+      "case": "showroom.motor.no_mesin unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0305",
+      "category": "input-bounds",
+      "case": "showroom.motor.kode_inventaris NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0306",
+      "category": "input-bounds",
+      "case": "showroom.motor.kode_inventaris rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0307",
+      "category": "input-bounds",
+      "case": "showroom.motor.no_polisi NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0308",
+      "category": "input-bounds",
+      "case": "showroom.motor.no_polisi rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0309",
+      "category": "input-bounds",
+      "case": "showroom.motor.merek NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0310",
+      "category": "input-bounds",
+      "case": "showroom.motor.merek rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0311",
+      "category": "input-bounds",
+      "case": "showroom.motor.tipe NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0312",
+      "category": "input-bounds",
+      "case": "showroom.motor.tipe rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0313",
+      "category": "input-bounds",
+      "case": "showroom.motor.tahun NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0314",
+      "category": "input-bounds",
+      "case": "showroom.motor.tahun rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0315",
+      "category": "input-bounds",
+      "case": "showroom.motor.warna NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0316",
+      "category": "input-bounds",
+      "case": "showroom.motor.warna rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0317",
+      "category": "input-bounds",
+      "case": "showroom.motor.no_rangka NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0318",
+      "category": "input-bounds",
+      "case": "showroom.motor.no_rangka rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0319",
+      "category": "input-bounds",
+      "case": "showroom.motor.no_mesin NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0320",
+      "category": "input-bounds",
+      "case": "showroom.motor.no_mesin rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0321",
+      "category": "input-bounds",
+      "case": "showroom.motor.harga_jual NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0322",
+      "category": "input-bounds",
+      "case": "showroom.motor.harga_jual rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0323",
+      "category": "input-bounds",
+      "case": "showroom.motor.status NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0324",
+      "category": "input-bounds",
+      "case": "showroom.motor.status rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0325",
+      "category": "ddl",
+      "case": "app cannot ALTER showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0326",
+      "category": "ddl",
+      "case": "backup cannot ALTER showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0327",
+      "category": "ddl",
+      "case": "viewer cannot ALTER showroom.motor",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0328",
+      "category": "constraints",
+      "case": "showroom.pegawai duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0329",
+      "category": "input-bounds",
+      "case": "showroom.pegawai.nama_pegawai NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0330",
+      "category": "input-bounds",
+      "case": "showroom.pegawai.nama_pegawai rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0331",
+      "category": "input-bounds",
+      "case": "showroom.pegawai.jabatan NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0332",
+      "category": "input-bounds",
+      "case": "showroom.pegawai.jabatan rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0333",
+      "category": "ddl",
+      "case": "app cannot ALTER showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0334",
+      "category": "ddl",
+      "case": "backup cannot ALTER showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0335",
+      "category": "ddl",
+      "case": "viewer cannot ALTER showroom.pegawai",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0336",
+      "category": "constraints",
+      "case": "showroom.pembayaran duplicate primary key",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0337",
+      "category": "constraints",
+      "case": "showroom.pembayaran.id_penjualan missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452"
+    },
+    {
+      "id": "AUD-0338",
+      "category": "constraints",
+      "case": "showroom.pembayaran.id_penjualan NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0339",
+      "category": "constraints",
+      "case": "showroom.pembayaran.id_pegawai missing parent",
+      "status": "PASS",
+      "detail": "MySQL error 1452"
+    },
+    {
+      "id": "AUD-0340",
+      "category": "constraints",
+      "case": "showroom.pembayaran.id_pegawai NULL parent",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0341",
+      "category": "constraints",
+      "case": "showroom.pembayaran.id_penjualan unique",
+      "status": "PASS",
+      "detail": "MySQL error 1062"
+    },
+    {
+      "id": "AUD-0342",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.metode NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0343",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.metode rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0344",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.jumlah_diterima NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0345",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.jumlah_diterima rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1264"
+    },
+    {
+      "id": "AUD-0346",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.referensi NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0347",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.referensi rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1406"
+    },
+    {
+      "id": "AUD-0348",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.tanggal_konfirmasi NOT NULL",
+      "status": "PASS",
+      "detail": "MySQL error 1048"
+    },
+    {
+      "id": "AUD-0349",
+      "category": "input-bounds",
+      "case": "showroom.pembayaran.tanggal_konfirmasi rejects type overflow",
+      "status": "PASS",
+      "detail": "MySQL error 1292"
+    },
+    {
+      "id": "AUD-0350",
+      "category": "ddl",
+      "case": "app cannot ALTER showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0351",
+      "category": "ddl",
+      "case": "backup cannot ALTER showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0352",
+      "category": "ddl",
+      "case": "viewer cannot ALTER showroom.pembayaran",
+      "status": "PASS",
+      "detail": "MySQL error 1142"
+    },
+    {
+      "id": "AUD-0353",
+      "category": "constraints",
+      "case": "showroom.pegawai parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0354",
+      "category": "constraints",
+      "case": "showroom.pegawai parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0355",
+      "category": "constraints",
+      "case": "showroom.pembeli parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0356",
+      "category": "constraints",
+      "case": "showroom.pembeli parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0357",
+      "category": "constraints",
+      "case": "showroom.motor parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0358",
+      "category": "constraints",
+      "case": "showroom.motor parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0359",
+      "category": "constraints",
+      "case": "showroom.penjualan parent delete restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0360",
+      "category": "constraints",
+      "case": "showroom.penjualan parent key update restricted",
+      "status": "PASS",
+      "detail": "MySQL error 1451"
+    },
+    {
+      "id": "AUD-0361",
+      "category": "transactions",
+      "case": "servis explicit rollback restores value",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0362",
+      "category": "transactions",
+      "case": "servis disconnect after duplicate error rolls back",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0363",
+      "category": "concurrency",
+      "case": "servis deadlock has one victim and one commit",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0364",
+      "category": "transactions",
+      "case": "showroom explicit rollback restores value",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0365",
+      "category": "transactions",
+      "case": "showroom disconnect after duplicate error rolls back",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0366",
+      "category": "concurrency",
+      "case": "showroom deadlock has one victim and one commit",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0367",
+      "category": "concurrency",
+      "case": "Eight service payments: one commit, seven duplicate rejections",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0368",
+      "category": "concurrency",
+      "case": "Eight motor sales: one commit, seven duplicate rejections",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0369",
+      "category": "business-boundary",
+      "case": "Negative service total accepted by ERD-only schema",
+      "status": "WARN",
+      "detail": "Observed in disposable schema; no constraint was added to the user ERD."
+    },
+    {
+      "id": "AUD-0370",
+      "category": "business-boundary",
+      "case": "Zero service quantity accepted",
+      "status": "WARN",
+      "detail": "Observed in disposable schema; no constraint was added to the user ERD."
+    },
+    {
+      "id": "AUD-0371",
+      "category": "business-boundary",
+      "case": "Negative sale price accepted by ERD-only schema",
+      "status": "WARN",
+      "detail": "Observed in disposable schema; no constraint was added to the user ERD."
+    },
+    {
+      "id": "AUD-0372",
+      "category": "business-boundary",
+      "case": "Sale total can differ from subtotal and discount",
+      "status": "WARN",
+      "detail": "Observed in disposable schema; no constraint was added to the user ERD."
+    },
+    {
+      "id": "AUD-0373",
+      "category": "business-boundary",
+      "case": "Session FK bypass with compromised writer credentials",
+      "status": "WARN",
+      "detail": "This is a native MySQL session capability, not a remote authentication bypass."
+    },
+    {
+      "id": "AUD-0374",
+      "category": "preservation",
+      "case": "Active ERD tables and row contents unchanged",
+      "status": "PASS"
+    },
+    {
+      "id": "AUD-0375",
+      "category": "preservation",
+      "case": "draw.io file unchanged",
+      "status": "PASS"
+    }
+  ],
+  "limits": [
+    "No guarantee of absolute security.",
+    "Backend/API login/authorization and production deployment are outside this database-only execution.",
+    "Only isolated schemas/accounts received test writes."
+  ]
+}
