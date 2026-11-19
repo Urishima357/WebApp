@@ -1,0 +1,668 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_Servis" targetNamespace="urn:garasi-hobby:servis:to-be">
+  <bpmn:process id="Process_Servis" name="Servis motor Garasi Hobby Priok" isExecutable="false">
+    <bpmn:documentation>Usulan penyelarasan dengan PRD v1.2, 19 November 2026. Proses deskriptif. Komunikasi eksternal dengan pelanggan digambarkan melalui tindakan staf yang mencatat hasilnya.</bpmn:documentation>
+    <bpmn:laneSet id="LaneSet_Servis">
+      <bpmn:lane id="LaneStaf" name="Staf bengkel / kasir">
+        <bpmn:flowNodeRef>Start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>WO</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Estimasi</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>KeputusanPelanggan</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Persetujuan</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Foto</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Pantau</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>TindakStok</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Pemakaian</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Aktual</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Progres</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Rekonsiliasi</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Pembayaran</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>SerahTerima</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="LaneMekanik" name="Mekanik">
+        <bpmn:flowNodeRef>Inspeksi</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Servis</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="LaneSistem" name="Sistem pencatatan">
+        <bpmn:flowNodeRef>HitungEstimasi</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>PeriksaStok</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Stok</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>MenungguBarang</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CatatPemakaian</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>HasilPemakaian</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Batalkan</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>HasilBatal</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndBatal</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Tagihan</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>VerifikasiLunas</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Lunas</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Finalisasi</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Nota</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Tutup</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start" name="Motor diterima">
+      <bpmn:outgoing>Flow_Start_WO</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="WO" name="Buat WO dan catat kondisi motor">
+      <bpmn:documentation>Catat pelanggan, motor, tanggal masuk, keluhan, kondisi dan staf penerima. Draft dapat disimpan sebelum data dan foto lengkap.</bpmn:documentation>
+      <bpmn:incoming>Flow_Start_WO</bpmn:incoming>
+      <bpmn:outgoing>Flow_WO_Inspeksi</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:manualTask id="Inspeksi" name="Periksa motor dan laporkan kebutuhan">
+      <bpmn:incoming>Flow_WO_Inspeksi</bpmn:incoming>
+      <bpmn:outgoing>Flow_Inspeksi_Estimasi</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:userTask id="Estimasi" name="Catat inspeksi dan susun estimasi">
+      <bpmn:documentation>Susun baris jasa dan barang. Simpan histori versi estimasi dan gunakan ambang persetujuan yang dikonfigurasi untuk revisi.</bpmn:documentation>
+      <bpmn:incoming>Flow_Inspeksi_Estimasi</bpmn:incoming>
+      <bpmn:incoming>Flow_Persetujuan_Estimasi</bpmn:incoming>
+      <bpmn:incoming>Flow_Progres_Estimasi</bpmn:incoming>
+      <bpmn:outgoing>Flow_Estimasi_HitungEstimasi</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="HitungEstimasi" name="Hitung estimasi dan validasi diskon">
+      <bpmn:documentation>Diskon di atas batas menunggu persetujuan owner.</bpmn:documentation>
+      <bpmn:incoming>Flow_Estimasi_HitungEstimasi</bpmn:incoming>
+      <bpmn:outgoing>Flow_HitungEstimasi_KeputusanPelanggan</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="KeputusanPelanggan" name="Minta dan catat keputusan estimasi">
+      <bpmn:documentation>WO menunggu persetujuan. Catat nama, metode, waktu, nilai atau versi estimasi dan staf pencatat. Owner dapat memberi override awal dengan izin dan alasan sesuai WKS-06.</bpmn:documentation>
+      <bpmn:incoming>Flow_HitungEstimasi_KeputusanPelanggan</bpmn:incoming>
+      <bpmn:outgoing>Flow_KeputusanPelanggan_Persetujuan</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Persetujuan" name="Hasil keputusan?" gatewayDirection="Diverging">
+      <bpmn:documentation>Lanjut setelah persetujuan tercatat atau override awal yang sah. Perubahan aktual di atas ambang meminta persetujuan pelanggan ulang.</bpmn:documentation>
+      <bpmn:incoming>Flow_KeputusanPelanggan_Persetujuan</bpmn:incoming>
+      <bpmn:outgoing>Flow_Persetujuan_Foto</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Persetujuan_Estimasi</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Persetujuan_Rekonsiliasi</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Foto" name="Lengkapi foto kondisi awal">
+      <bpmn:documentation>Minimal satu foto umum dan satu foto area masalah serta tambahan jika ada kerusakan lain. Akses foto privat. Pengerjaan menunggu foto lengkap.</bpmn:documentation>
+      <bpmn:incoming>Flow_Persetujuan_Foto</bpmn:incoming>
+      <bpmn:outgoing>Flow_Foto_PeriksaStok</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="PeriksaStok" name="Periksa stok untuk langkah pekerjaan">
+      <bpmn:documentation>Cek saldo dan tandai barang kurang berdasarkan kebutuhan yang belum dipenuhi.</bpmn:documentation>
+      <bpmn:incoming>Flow_Foto_PeriksaStok</bpmn:incoming>
+      <bpmn:incoming>Flow_TindakStok_PeriksaStok</bpmn:incoming>
+      <bpmn:incoming>Flow_Progres_PeriksaStok</bpmn:incoming>
+      <bpmn:outgoing>Flow_PeriksaStok_Stok</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Stok" name="Stok cukup?" gatewayDirection="Diverging">
+      <bpmn:incoming>Flow_PeriksaStok_Stok</bpmn:incoming>
+      <bpmn:outgoing>Flow_Stok_Pemakaian</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Stok_MenungguBarang</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="MenungguBarang" name="Ubah WO ke Menunggu Barang">
+      <bpmn:incoming>Flow_Stok_MenungguBarang</bpmn:incoming>
+      <bpmn:incoming>Flow_HasilPemakaian_MenungguBarang</bpmn:incoming>
+      <bpmn:outgoing>Flow_MenungguBarang_Pantau</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Pantau" name="Pantau stok masuk atau tindak lanjuti pengadaan">
+      <bpmn:documentation>Jika barang diterima dari pemasok, staf berizin memfinalisasi penerimaan pada proses barang masuk. Draft penerimaan tidak mengubah stok.</bpmn:documentation>
+      <bpmn:incoming>Flow_MenungguBarang_Pantau</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pantau_TindakStok</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="TindakStok" name="Keputusan saat menunggu?" gatewayDirection="Diverging">
+      <bpmn:documentation>Jika stok tersedia, periksa ulang. Jika pekerjaan dihentikan, ikuti pembatalan. PRD Bagian 13.1 mengizinkan WO Menunggu Barang beralih ke Dikerjakan atau Dibatalkan.</bpmn:documentation>
+      <bpmn:incoming>Flow_Pantau_TindakStok</bpmn:incoming>
+      <bpmn:outgoing>Flow_TindakStok_PeriksaStok</bpmn:outgoing>
+      <bpmn:outgoing>Flow_TindakStok_Rekonsiliasi</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Pemakaian" name="Mulai atau lanjutkan WO dan konfirmasi barang diambil">
+      <bpmn:documentation>Ubah WO ke Dikerjakan setelah syarat foto dan persetujuan terpenuhi. Konfirmasi barang aktual yang diambil atau dipakai. Langkah jasa tanpa barang tidak membuat movement.</bpmn:documentation>
+      <bpmn:incoming>Flow_Stok_Pemakaian</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pemakaian_CatatPemakaian</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="CatatPemakaian" name="Validasi dan catat barang keluar satu kali">
+      <bpmn:documentation>Validasi jumlah aktual, kunci saldo dan catat movement keluaran dengan referensi WO secara atomik. Tolak stok kurang tanpa mutasi. Ulangan konfirmasi tidak mendebit ulang.</bpmn:documentation>
+      <bpmn:incoming>Flow_Pemakaian_CatatPemakaian</bpmn:incoming>
+      <bpmn:outgoing>Flow_CatatPemakaian_HasilPemakaian</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="HasilPemakaian" name="Boleh lanjut?" gatewayDirection="Diverging">
+      <bpmn:incoming>Flow_CatatPemakaian_HasilPemakaian</bpmn:incoming>
+      <bpmn:outgoing>Flow_HasilPemakaian_Servis</bpmn:outgoing>
+      <bpmn:outgoing>Flow_HasilPemakaian_MenungguBarang</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:manualTask id="Servis" name="Kerjakan servis sesuai lingkup yang disetujui">
+      <bpmn:incoming>Flow_HasilPemakaian_Servis</bpmn:incoming>
+      <bpmn:outgoing>Flow_Servis_Aktual</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:userTask id="Aktual" name="Catat jasa aktual dan periksa progres WO">
+      <bpmn:documentation>Jika perubahan aktual melewati ambang, tahan pekerjaan dan finalisasi sampai persetujuan ulang. Catat barang tambahan sebelum diambil atau dipakai.</bpmn:documentation>
+      <bpmn:incoming>Flow_Servis_Aktual</bpmn:incoming>
+      <bpmn:outgoing>Flow_Aktual_Progres</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Progres" name="Tindak lanjut WO?" gatewayDirection="Diverging">
+      <bpmn:incoming>Flow_Aktual_Progres</bpmn:incoming>
+      <bpmn:outgoing>Flow_Progres_Tagihan</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Progres_Estimasi</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Progres_PeriksaStok</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Progres_Rekonsiliasi</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Rekonsiliasi" name="Catat alasan batal dan rekonsiliasi barang">
+      <bpmn:documentation>Sebelum transaksi final, pengembalian atau reversal harus sah, atau catat penjelasan movement yang sah. Jika estimasi ditolak sebelum pemakaian, stok tidak berubah.</bpmn:documentation>
+      <bpmn:incoming>Flow_Persetujuan_Rekonsiliasi</bpmn:incoming>
+      <bpmn:incoming>Flow_TindakStok_Rekonsiliasi</bpmn:incoming>
+      <bpmn:incoming>Flow_Progres_Rekonsiliasi</bpmn:incoming>
+      <bpmn:incoming>Flow_HasilBatal_Rekonsiliasi</bpmn:incoming>
+      <bpmn:outgoing>Flow_Rekonsiliasi_Batalkan</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Batalkan" name="Validasi rekonsiliasi dan batalkan WO">
+      <bpmn:documentation>Simpan histori. Tahan pembatalan jika barang yang sudah dikeluarkan belum direkonsiliasi.</bpmn:documentation>
+      <bpmn:incoming>Flow_Rekonsiliasi_Batalkan</bpmn:incoming>
+      <bpmn:outgoing>Flow_Batalkan_HasilBatal</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="HasilBatal" name="Rekonsiliasi sah?" gatewayDirection="Diverging">
+      <bpmn:incoming>Flow_Batalkan_HasilBatal</bpmn:incoming>
+      <bpmn:outgoing>Flow_HasilBatal_EndBatal</bpmn:outgoing>
+      <bpmn:outgoing>Flow_HasilBatal_Rekonsiliasi</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="EndBatal" name="WO dibatalkan">
+      <bpmn:incoming>Flow_HasilBatal_EndBatal</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Tagihan" name="Tandai Siap Diambil dan hitung total aktual">
+      <bpmn:documentation>Hitung total dari jasa dan barang aktual serta diskon sah. Verifikasi movement yang tercatat tanpa mendebit stok lagi.</bpmn:documentation>
+      <bpmn:incoming>Flow_Progres_Tagihan</bpmn:incoming>
+      <bpmn:outgoing>Flow_Tagihan_Pembayaran</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Pembayaran" name="Proses pembayaran dan pantau status">
+      <bpmn:documentation>Staf berizin mengonfirmasi tunai atau transfer manual. Untuk QRIS atau e-wallet, sistem membuat permintaan gateway dan menunggu konfirmasi otomatis. Pembayaran lunas memakai satu metode.</bpmn:documentation>
+      <bpmn:incoming>Flow_Tagihan_Pembayaran</bpmn:incoming>
+      <bpmn:incoming>Flow_Lunas_Pembayaran</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pembayaran_VerifikasiLunas</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="VerifikasiLunas" name="Validasi nominal dan status pembayaran">
+      <bpmn:documentation>Tunai boleh lebih dengan kembalian. Transfer dan gateway harus tepat nominal. Status gateway Paid berasal dari callback terverifikasi. Pending, Failed dan Expired tidak menutup transaksi.</bpmn:documentation>
+      <bpmn:incoming>Flow_Pembayaran_VerifikasiLunas</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifikasiLunas_Lunas</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Lunas" name="Lunas terverifikasi?" gatewayDirection="Diverging">
+      <bpmn:incoming>Flow_VerifikasiLunas_Lunas</bpmn:incoming>
+      <bpmn:outgoing>Flow_Lunas_Finalisasi</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Lunas_Pembayaran</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Finalisasi" name="Simpan transaksi dan pembayaran satu kali">
+      <bpmn:documentation>Finalisasi atomik dan idempoten, satu transaksi final aktif per WO. Jika penyimpanan gagal, ulangi dengan referensi yang sama tanpa menagih atau mengurangi stok lagi.</bpmn:documentation>
+      <bpmn:incoming>Flow_Lunas_Finalisasi</bpmn:incoming>
+      <bpmn:outgoing>Flow_Finalisasi_Nota</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Nota" name="Terbitkan nota A4 dari transaksi final">
+      <bpmn:documentation>Terbitkan setelah transaksi lunas tersimpan. Jika cetak gagal, ulangi cetak dari nota yang sama.</bpmn:documentation>
+      <bpmn:incoming>Flow_Finalisasi_Nota</bpmn:incoming>
+      <bpmn:outgoing>Flow_Nota_SerahTerima</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="SerahTerima" name="Serahkan nota dan catat penyerahan motor">
+      <bpmn:incoming>Flow_Nota_SerahTerima</bpmn:incoming>
+      <bpmn:outgoing>Flow_SerahTerima_Tutup</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Tutup" name="Ubah WO ke Selesai">
+      <bpmn:documentation>Hanya setelah transaksi final dan penyerahan motor tercatat.</bpmn:documentation>
+      <bpmn:incoming>Flow_SerahTerima_Tutup</bpmn:incoming>
+      <bpmn:outgoing>Flow_Tutup_End</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="End" name="Servis selesai">
+      <bpmn:incoming>Flow_Tutup_End</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Start_WO" sourceRef="Start" targetRef="WO" />
+    <bpmn:sequenceFlow id="Flow_WO_Inspeksi" sourceRef="WO" targetRef="Inspeksi" />
+    <bpmn:sequenceFlow id="Flow_Inspeksi_Estimasi" sourceRef="Inspeksi" targetRef="Estimasi" />
+    <bpmn:sequenceFlow id="Flow_Estimasi_HitungEstimasi" sourceRef="Estimasi" targetRef="HitungEstimasi" />
+    <bpmn:sequenceFlow id="Flow_HitungEstimasi_KeputusanPelanggan" sourceRef="HitungEstimasi" targetRef="KeputusanPelanggan" />
+    <bpmn:sequenceFlow id="Flow_KeputusanPelanggan_Persetujuan" sourceRef="KeputusanPelanggan" targetRef="Persetujuan" />
+    <bpmn:sequenceFlow id="Flow_Persetujuan_Foto" sourceRef="Persetujuan" targetRef="Foto" name="Boleh lanjut" />
+    <bpmn:sequenceFlow id="Flow_Foto_PeriksaStok" sourceRef="Foto" targetRef="PeriksaStok" />
+    <bpmn:sequenceFlow id="Flow_PeriksaStok_Stok" sourceRef="PeriksaStok" targetRef="Stok" />
+    <bpmn:sequenceFlow id="Flow_Stok_Pemakaian" sourceRef="Stok" targetRef="Pemakaian" name="Cukup" />
+    <bpmn:sequenceFlow id="Flow_Stok_MenungguBarang" sourceRef="Stok" targetRef="MenungguBarang" name="Kurang" />
+    <bpmn:sequenceFlow id="Flow_MenungguBarang_Pantau" sourceRef="MenungguBarang" targetRef="Pantau" />
+    <bpmn:sequenceFlow id="Flow_Pantau_TindakStok" sourceRef="Pantau" targetRef="TindakStok" />
+    <bpmn:sequenceFlow id="Flow_TindakStok_PeriksaStok" sourceRef="TindakStok" targetRef="PeriksaStok" name="Cek ulang" />
+    <bpmn:sequenceFlow id="Flow_Pemakaian_CatatPemakaian" sourceRef="Pemakaian" targetRef="CatatPemakaian" />
+    <bpmn:sequenceFlow id="Flow_CatatPemakaian_HasilPemakaian" sourceRef="CatatPemakaian" targetRef="HasilPemakaian" />
+    <bpmn:sequenceFlow id="Flow_HasilPemakaian_Servis" sourceRef="HasilPemakaian" targetRef="Servis" name="Valid" />
+    <bpmn:sequenceFlow id="Flow_HasilPemakaian_MenungguBarang" sourceRef="HasilPemakaian" targetRef="MenungguBarang" name="Stok kurang" />
+    <bpmn:sequenceFlow id="Flow_Servis_Aktual" sourceRef="Servis" targetRef="Aktual" />
+    <bpmn:sequenceFlow id="Flow_Aktual_Progres" sourceRef="Aktual" targetRef="Progres" />
+    <bpmn:sequenceFlow id="Flow_Progres_Tagihan" sourceRef="Progres" targetRef="Tagihan" name="Siap Diambil" />
+    <bpmn:sequenceFlow id="Flow_Tagihan_Pembayaran" sourceRef="Tagihan" targetRef="Pembayaran" />
+    <bpmn:sequenceFlow id="Flow_Pembayaran_VerifikasiLunas" sourceRef="Pembayaran" targetRef="VerifikasiLunas" />
+    <bpmn:sequenceFlow id="Flow_VerifikasiLunas_Lunas" sourceRef="VerifikasiLunas" targetRef="Lunas" />
+    <bpmn:sequenceFlow id="Flow_Lunas_Finalisasi" sourceRef="Lunas" targetRef="Finalisasi" name="Ya" />
+    <bpmn:sequenceFlow id="Flow_Lunas_Pembayaran" sourceRef="Lunas" targetRef="Pembayaran" name="Belum lunas" />
+    <bpmn:sequenceFlow id="Flow_Finalisasi_Nota" sourceRef="Finalisasi" targetRef="Nota" />
+    <bpmn:sequenceFlow id="Flow_Nota_SerahTerima" sourceRef="Nota" targetRef="SerahTerima" />
+    <bpmn:sequenceFlow id="Flow_SerahTerima_Tutup" sourceRef="SerahTerima" targetRef="Tutup" />
+    <bpmn:sequenceFlow id="Flow_Tutup_End" sourceRef="Tutup" targetRef="End" />
+    <bpmn:sequenceFlow id="Flow_Persetujuan_Estimasi" sourceRef="Persetujuan" targetRef="Estimasi" name="Revisi" />
+    <bpmn:sequenceFlow id="Flow_Progres_Estimasi" sourceRef="Progres" targetRef="Estimasi" name="Di atas ambang" />
+    <bpmn:sequenceFlow id="Flow_Progres_PeriksaStok" sourceRef="Progres" targetRef="PeriksaStok" name="Lanjut kerja" />
+    <bpmn:sequenceFlow id="Flow_Persetujuan_Rekonsiliasi" sourceRef="Persetujuan" targetRef="Rekonsiliasi" name="Ditolak dan batal" />
+    <bpmn:sequenceFlow id="Flow_TindakStok_Rekonsiliasi" sourceRef="TindakStok" targetRef="Rekonsiliasi" name="Batalkan WO" />
+    <bpmn:sequenceFlow id="Flow_Progres_Rekonsiliasi" sourceRef="Progres" targetRef="Rekonsiliasi" name="Hentikan servis" />
+    <bpmn:sequenceFlow id="Flow_Rekonsiliasi_Batalkan" sourceRef="Rekonsiliasi" targetRef="Batalkan" />
+    <bpmn:sequenceFlow id="Flow_Batalkan_HasilBatal" sourceRef="Batalkan" targetRef="HasilBatal" />
+    <bpmn:sequenceFlow id="Flow_HasilBatal_EndBatal" sourceRef="HasilBatal" targetRef="EndBatal" name="Ya" />
+    <bpmn:sequenceFlow id="Flow_HasilBatal_Rekonsiliasi" sourceRef="HasilBatal" targetRef="Rekonsiliasi" name="Belum lengkap" />
+  </bpmn:process>
+  <bpmn:collaboration id="Collaboration_Servis">
+    <bpmn:participant id="Bengkel" name="Bengkel Garasi Hobby Priok" processRef="Process_Servis" />
+  </bpmn:collaboration>
+  <bpmndi:BPMNDiagram id="Diagram_Servis" name="Servis motor TO-BE">
+    <bpmndi:BPMNPlane id="Plane_Servis" bpmnElement="Collaboration_Servis">
+      <bpmndi:BPMNShape id="Shape_Bengkel" bpmnElement="Bengkel" isHorizontal="true">
+        <dc:Bounds x="70" y="40" width="4970" height="860" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_LaneStaf" bpmnElement="LaneStaf" isHorizontal="true">
+        <dc:Bounds x="100" y="40" width="4940" height="340" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_LaneMekanik" bpmnElement="LaneMekanik" isHorizontal="true">
+        <dc:Bounds x="100" y="380" width="4940" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_LaneSistem" bpmnElement="LaneSistem" isHorizontal="true">
+        <dc:Bounds x="100" y="520" width="4940" height="380" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Start" bpmnElement="Start">
+        <dc:Bounds x="140" y="220" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="107" y="268" width="106" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_WO" bpmnElement="WO">
+        <dc:Bounds x="240" y="200" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Inspeksi" bpmnElement="Inspeksi">
+        <dc:Bounds x="440" y="400" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Estimasi" bpmnElement="Estimasi">
+        <dc:Bounds x="640" y="200" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_HitungEstimasi" bpmnElement="HitungEstimasi">
+        <dc:Bounds x="800" y="600" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_KeputusanPelanggan" bpmnElement="KeputusanPelanggan">
+        <dc:Bounds x="980" y="200" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Persetujuan" bpmnElement="Persetujuan">
+        <dc:Bounds x="1220" y="220" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1180" y="268" width="120" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Foto" bpmnElement="Foto">
+        <dc:Bounds x="1420" y="200" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_PeriksaStok" bpmnElement="PeriksaStok">
+        <dc:Bounds x="1620" y="600" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Stok" bpmnElement="Stok">
+        <dc:Bounds x="1880" y="620" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1858" y="668" width="85" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_MenungguBarang" bpmnElement="MenungguBarang">
+        <dc:Bounds x="1940" y="760" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Pantau" bpmnElement="Pantau">
+        <dc:Bounds x="2060" y="200" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_TindakStok" bpmnElement="TindakStok">
+        <dc:Bounds x="2120" y="100" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2052" y="148" width="176" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Pemakaian" bpmnElement="Pemakaian">
+        <dc:Bounds x="2280" y="200" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_CatatPemakaian" bpmnElement="CatatPemakaian">
+        <dc:Bounds x="2460" y="600" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_HasilPemakaian" bpmnElement="HasilPemakaian">
+        <dc:Bounds x="2700" y="620" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2671" y="668" width="99" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Servis" bpmnElement="Servis">
+        <dc:Bounds x="2820" y="400" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Aktual" bpmnElement="Aktual">
+        <dc:Bounds x="3000" y="200" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Progres" bpmnElement="Progres">
+        <dc:Bounds x="3240" y="220" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3197" y="268" width="127" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Rekonsiliasi" bpmnElement="Rekonsiliasi">
+        <dc:Bounds x="3340" y="80" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Batalkan" bpmnElement="Batalkan">
+        <dc:Bounds x="3540" y="760" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_HasilBatal" bpmnElement="HasilBatal">
+        <dc:Bounds x="3820" y="780" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3777" y="828" width="127" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_EndBatal" bpmnElement="EndBatal">
+        <dc:Bounds x="4040" y="780" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4011" y="828" width="99" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Tagihan" bpmnElement="Tagihan">
+        <dc:Bounds x="3400" y="600" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Pembayaran" bpmnElement="Pembayaran">
+        <dc:Bounds x="3600" y="200" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_VerifikasiLunas" bpmnElement="VerifikasiLunas">
+        <dc:Bounds x="3800" y="600" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Lunas" bpmnElement="Lunas">
+        <dc:Bounds x="4040" y="620" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3986" y="668" width="148" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Finalisasi" bpmnElement="Finalisasi">
+        <dc:Bounds x="4180" y="600" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Nota" bpmnElement="Nota">
+        <dc:Bounds x="4380" y="600" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_SerahTerima" bpmnElement="SerahTerima">
+        <dc:Bounds x="4560" y="200" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Tutup" bpmnElement="Tutup">
+        <dc:Bounds x="4740" y="600" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End" bpmnElement="End">
+        <dc:Bounds x="4940" y="220" width="40" height="40" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4907" y="268" width="106" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Flow_Start_WO" bpmnElement="Flow_Start_WO">
+        <di:waypoint x="180" y="240" />
+        <di:waypoint x="240" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_WO_Inspeksi" bpmnElement="Flow_WO_Inspeksi">
+        <di:waypoint x="400" y="240" />
+        <di:waypoint x="420" y="240" />
+        <di:waypoint x="420" y="440" />
+        <di:waypoint x="440" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Inspeksi_Estimasi" bpmnElement="Flow_Inspeksi_Estimasi">
+        <di:waypoint x="600" y="440" />
+        <di:waypoint x="620" y="440" />
+        <di:waypoint x="620" y="240" />
+        <di:waypoint x="640" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Estimasi_HitungEstimasi" bpmnElement="Flow_Estimasi_HitungEstimasi">
+        <di:waypoint x="800" y="240" />
+        <di:waypoint x="820" y="240" />
+        <di:waypoint x="820" y="580" />
+        <di:waypoint x="780" y="580" />
+        <di:waypoint x="780" y="640" />
+        <di:waypoint x="800" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_HitungEstimasi_KeputusanPelanggan" bpmnElement="Flow_HitungEstimasi_KeputusanPelanggan">
+        <di:waypoint x="960" y="640" />
+        <di:waypoint x="980" y="640" />
+        <di:waypoint x="980" y="300" />
+        <di:waypoint x="960" y="300" />
+        <di:waypoint x="960" y="240" />
+        <di:waypoint x="980" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_KeputusanPelanggan_Persetujuan" bpmnElement="Flow_KeputusanPelanggan_Persetujuan">
+        <di:waypoint x="1140" y="240" />
+        <di:waypoint x="1220" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Persetujuan_Foto" bpmnElement="Flow_Persetujuan_Foto">
+        <di:waypoint x="1260" y="240" />
+        <di:waypoint x="1420" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1294" y="248" width="92" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Foto_PeriksaStok" bpmnElement="Flow_Foto_PeriksaStok">
+        <di:waypoint x="1500" y="280" />
+        <di:waypoint x="1500" y="640" />
+        <di:waypoint x="1620" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_PeriksaStok_Stok" bpmnElement="Flow_PeriksaStok_Stok">
+        <di:waypoint x="1780" y="640" />
+        <di:waypoint x="1880" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Stok_Pemakaian" bpmnElement="Flow_Stok_Pemakaian">
+        <di:waypoint x="1920" y="640" />
+        <di:waypoint x="2260" y="640" />
+        <di:waypoint x="2260" y="240" />
+        <di:waypoint x="2280" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1984" y="648" width="43" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Stok_MenungguBarang" bpmnElement="Flow_Stok_MenungguBarang">
+        <di:waypoint x="1900" y="660" />
+        <di:waypoint x="1900" y="800" />
+        <di:waypoint x="1940" y="800" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1822" y="686" width="50" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_MenungguBarang_Pantau" bpmnElement="Flow_MenungguBarang_Pantau">
+        <di:waypoint x="2020" y="760" />
+        <di:waypoint x="2020" y="300" />
+        <di:waypoint x="2140" y="300" />
+        <di:waypoint x="2140" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Pantau_TindakStok" bpmnElement="Flow_Pantau_TindakStok">
+        <di:waypoint x="2140" y="200" />
+        <di:waypoint x="2140" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_TindakStok_PeriksaStok" bpmnElement="Flow_TindakStok_PeriksaStok">
+        <di:waypoint x="2120" y="120" />
+        <di:waypoint x="1800" y="120" />
+        <di:waypoint x="1800" y="700" />
+        <di:waypoint x="1700" y="700" />
+        <di:waypoint x="1700" y="680" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1845" y="128" width="71" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Pemakaian_CatatPemakaian" bpmnElement="Flow_Pemakaian_CatatPemakaian">
+        <di:waypoint x="2360" y="280" />
+        <di:waypoint x="2360" y="640" />
+        <di:waypoint x="2460" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_CatatPemakaian_HasilPemakaian" bpmnElement="Flow_CatatPemakaian_HasilPemakaian">
+        <di:waypoint x="2620" y="640" />
+        <di:waypoint x="2700" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_HasilPemakaian_Servis" bpmnElement="Flow_HasilPemakaian_Servis">
+        <di:waypoint x="2740" y="640" />
+        <di:waypoint x="2800" y="640" />
+        <di:waypoint x="2800" y="440" />
+        <di:waypoint x="2820" y="440" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2749" y="648" width="43" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_HasilPemakaian_MenungguBarang" bpmnElement="Flow_HasilPemakaian_MenungguBarang">
+        <di:waypoint x="2720" y="660" />
+        <di:waypoint x="2720" y="800" />
+        <di:waypoint x="2100" y="800" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2213" y="808" width="85" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Servis_Aktual" bpmnElement="Flow_Servis_Aktual">
+        <di:waypoint x="2980" y="440" />
+        <di:waypoint x="3080" y="440" />
+        <di:waypoint x="3080" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Aktual_Progres" bpmnElement="Flow_Aktual_Progres">
+        <di:waypoint x="3160" y="240" />
+        <di:waypoint x="3240" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Progres_Tagihan" bpmnElement="Flow_Progres_Tagihan">
+        <di:waypoint x="3260" y="260" />
+        <di:waypoint x="3260" y="640" />
+        <di:waypoint x="3400" y="640" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3249" y="648" width="92" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Tagihan_Pembayaran" bpmnElement="Flow_Tagihan_Pembayaran">
+        <di:waypoint x="3560" y="640" />
+        <di:waypoint x="3580" y="640" />
+        <di:waypoint x="3580" y="240" />
+        <di:waypoint x="3600" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Pembayaran_VerifikasiLunas" bpmnElement="Flow_Pembayaran_VerifikasiLunas">
+        <di:waypoint x="3680" y="280" />
+        <di:waypoint x="3680" y="640" />
+        <di:waypoint x="3800" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_VerifikasiLunas_Lunas" bpmnElement="Flow_VerifikasiLunas_Lunas">
+        <di:waypoint x="3960" y="640" />
+        <di:waypoint x="4040" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Lunas_Finalisasi" bpmnElement="Flow_Lunas_Finalisasi">
+        <di:waypoint x="4080" y="640" />
+        <di:waypoint x="4180" y="640" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4094" y="648" width="22" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Lunas_Pembayaran" bpmnElement="Flow_Lunas_Pembayaran">
+        <di:waypoint x="4060" y="620" />
+        <di:waypoint x="4060" y="240" />
+        <di:waypoint x="3760" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3793" y="248" width="85" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Finalisasi_Nota" bpmnElement="Flow_Finalisasi_Nota">
+        <di:waypoint x="4340" y="640" />
+        <di:waypoint x="4380" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Nota_SerahTerima" bpmnElement="Flow_Nota_SerahTerima">
+        <di:waypoint x="4460" y="600" />
+        <di:waypoint x="4460" y="240" />
+        <di:waypoint x="4560" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_SerahTerima_Tutup" bpmnElement="Flow_SerahTerima_Tutup">
+        <di:waypoint x="4640" y="280" />
+        <di:waypoint x="4640" y="640" />
+        <di:waypoint x="4740" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Tutup_End" bpmnElement="Flow_Tutup_End">
+        <di:waypoint x="4900" y="640" />
+        <di:waypoint x="4960" y="640" />
+        <di:waypoint x="4960" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Persetujuan_Estimasi" bpmnElement="Flow_Persetujuan_Estimasi">
+        <di:waypoint x="1240" y="220" />
+        <di:waypoint x="1240" y="180" />
+        <di:waypoint x="720" y="180" />
+        <di:waypoint x="720" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="825" y="188" width="50" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Progres_Estimasi" bpmnElement="Flow_Progres_Estimasi">
+        <di:waypoint x="3260" y="220" />
+        <di:waypoint x="3260" y="180" />
+        <di:waypoint x="1240" y="180" />
+        <di:waypoint x="1240" y="160" />
+        <di:waypoint x="720" y="160" />
+        <di:waypoint x="720" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1692" y="188" width="106" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Progres_PeriksaStok" bpmnElement="Flow_Progres_PeriksaStok">
+        <di:waypoint x="3260" y="260" />
+        <di:waypoint x="3260" y="280" />
+        <di:waypoint x="3240" y="280" />
+        <di:waypoint x="3240" y="580" />
+        <di:waypoint x="1700" y="580" />
+        <di:waypoint x="1700" y="600" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2039" y="588" width="92" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Persetujuan_Rekonsiliasi" bpmnElement="Flow_Persetujuan_Rekonsiliasi">
+        <di:waypoint x="1240" y="260" />
+        <di:waypoint x="1240" y="320" />
+        <di:waypoint x="3180" y="320" />
+        <di:waypoint x="3180" y="120" />
+        <di:waypoint x="3340" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1662" y="328" width="127" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_TindakStok_Rekonsiliasi" bpmnElement="Flow_TindakStok_Rekonsiliasi">
+        <di:waypoint x="2160" y="120" />
+        <di:waypoint x="3180" y="120" />
+        <di:waypoint x="3180" y="100" />
+        <di:waypoint x="3320" y="100" />
+        <di:waypoint x="3320" y="120" />
+        <di:waypoint x="3340" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2373" y="128" width="85" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Progres_Rekonsiliasi" bpmnElement="Flow_Progres_Rekonsiliasi">
+        <di:waypoint x="3280" y="240" />
+        <di:waypoint x="3420" y="240" />
+        <di:waypoint x="3420" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3294" y="248" width="113" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Rekonsiliasi_Batalkan" bpmnElement="Flow_Rekonsiliasi_Batalkan">
+        <di:waypoint x="3500" y="120" />
+        <di:waypoint x="3560" y="120" />
+        <di:waypoint x="3560" y="580" />
+        <di:waypoint x="3600" y="580" />
+        <di:waypoint x="3600" y="740" />
+        <di:waypoint x="3520" y="740" />
+        <di:waypoint x="3520" y="800" />
+        <di:waypoint x="3540" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Batalkan_HasilBatal" bpmnElement="Flow_Batalkan_HasilBatal">
+        <di:waypoint x="3700" y="800" />
+        <di:waypoint x="3820" y="800" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_HasilBatal_EndBatal" bpmnElement="Flow_HasilBatal_EndBatal">
+        <di:waypoint x="3860" y="800" />
+        <di:waypoint x="4040" y="800" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3894" y="808" width="22" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_HasilBatal_Rekonsiliasi" bpmnElement="Flow_HasilBatal_Rekonsiliasi">
+        <di:waypoint x="3840" y="780" />
+        <di:waypoint x="3840" y="700" />
+        <di:waypoint x="3780" y="700" />
+        <di:waypoint x="3780" y="60" />
+        <di:waypoint x="3420" y="60" />
+        <di:waypoint x="3420" y="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3713" y="711" width="99" height="18" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

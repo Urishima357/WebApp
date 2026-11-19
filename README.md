@@ -4,9 +4,9 @@ Sistem informasi operasional bengkel dan showroom Garasi Hobby, direncanakan seb
 
 ## Status
 
-Frontend responsif **React + TypeScript + Vite** sudah tersedia di [`apps/web`](apps/web/README.md), dengan [revisi visual kedua 9 November 2026](docs/testing/UI-REVISION-02-2026-11-09.md) mengikuti komposisi layar Stitch: panel ringkasan, kartu servis mobile, aset raster tanpa SVG, motion native foto/halaman/dialog. Modul operasional dapat dicoba memakai akun dan data demo lokal. Backend masih kerangka folder: belum ada Laravel terinstal, migration, model, endpoint, maupun deployment.
+Frontend responsif **React + TypeScript + Vite** sudah tersedia di [`apps/web`](apps/web/README.md), dengan [revisi visual kedua 9 November 2026](docs/testing/UI-REVISION-02-2026-11-09.md) mengikuti komposisi layar Stitch: panel ringkasan, kartu servis mobile, aset raster tanpa SVG, motion native foto/halaman/dialog. Modul operasional dapat dicoba memakai akun dan data demo lokal. Pilot bengkel terintegrasi memakai Laravel dan MySQL lokal. Lihat [cara menjalankan pilot](apps/api/README.md).
 
-Stack: **React + TypeScript + Vite** untuk frontend; rencana backend **Laravel API** dan **MySQL Community dengan engine InnoDB**. Backend dirancang modular monolith. Bahasa antarmuka Bahasa Indonesia.
+Stack: **React + TypeScript + Vite** untuk frontend; backend pilot **Laravel API** dan **MySQL Community dengan engine InnoDB**. Backend dirancang modular monolith. Bahasa antarmuka Bahasa Indonesia.
 
 ```powershell
 cd apps/web
@@ -16,7 +16,7 @@ npm run dev
 
 Frontend menyediakan login role demo, dashboard, WO, showroom, stok, pelanggan, supplier, penerimaan, POS, pembayaran simulasi, nota A4, kontrol finansial, laporan, audit, dan pengaturan. `npm test` menjalankan pemeriksaan aturan demo; `npm run build` memeriksa TypeScript dan membuat build produksi. Lihat [cakupan dan hasil pemeriksaan](docs/testing/FRONTEND.md).
 
-**Belum untuk produksi:** login tidak memakai kredensial nyata; data tersimpan di browser. Otorisasi server, API, private storage, gateway/webhook dan keamanan transaksi belum terhubung. Jangan memasukkan data pribadi atau pembayaran nyata.
+**Gunakan data uji.** Demo menyimpan data di browser. Pilot bengkel menyimpan data di MySQL, memakai akun dan otorisasi server, serta mendukung pembayaran manual. QRIS/e-wallet, deployment, dan UAT stakeholder masih terbuka.
 
 ## Struktur folder
 
@@ -24,7 +24,7 @@ Frontend menyediakan login role demo, dashboard, WO, showroom, stok, pelanggan, 
 |---|---|
 | `apps/api/app/Modules/` | Modul backend: Identity, Business, Customers, Vehicles, Inventory, Purchasing, Workshop, Showroom, Transactions, Payments, Media, Reporting, dan Audit. |
 | `apps/api/app/Support/` | Utilitas backend bersama yang tidak dimiliki satu modul bisnis. |
-| `apps/api/database/` | Migration, factory, dan seeder saat implementasi dimulai. |
+| `apps/api/database/` | Migrasi pilot dan SQL ERD/LRS. |
 | `apps/api/routes/` | Definisi route backend. |
 | `apps/api/tests/` | Pengujian unit dan fitur/integrasi backend. |
 | `apps/web/public/` | Aset statis publik frontend; bukan tempat foto operasional privat. |
@@ -42,11 +42,12 @@ Frontend menyediakan login role demo, dashboard, WO, showroom, stok, pelanggan, 
 | `scripts/` | Skrip setup dan pemeliharaan saat diperlukan. |
 | `designs/` | Referensi desain dan catatan konversi ERD yang sudah tersedia. |
 
-Direktori backend, kontrak, dan infrastruktur yang masih kosong berisi `.gitkeep`. Frontend berisi implementasi modul, aset lokal, dan pemeriksaan domain demo.
+Direktori modul yang belum terimplementasi berisi `.gitkeep`. Frontend menyediakan pilot bengkel serta modul demo lain dengan aset lokal dan pemeriksaan domain.
 
 ## Acuan proyek
 
 - [PRD v1.2](<Product Requirements Document (PRD) v1.2.md>) menjadi baseline kebutuhan produk.
+- [Usulan keputusan rilis 19 November](docs/decisions/2026-11-19-skema-dan-ruang-lingkup-rilis.md) mencatat pilihan skema aplikasi dan cakupan tahap pertama yang menunggu persetujuan. [BPMN servis TO-BE](designs/bpmn/README.md) memetakan alur servis dan skenario review terhadap PRD.
 - [ERD dan LRS](<ERD Garasi Hobby Priok.drawio>) menjadi referensi model servis dan penjualan; [catatan konversi](designs/erd/CATATAN_KONVERSI.md) menjelaskan bagian yang perlu diselaraskan dengan PRD sebelum menjadi skema aplikasi.
 - [Desain Stitch](designs/stitch/README.md) dan [spesifikasi motion](designs/stitch/MOTION.md) menjadi acuan tampilan.
 

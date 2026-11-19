@@ -27,6 +27,8 @@ import {
   woStatuses,
 } from "../lib/domain.ts";
 import { Workshop } from "../features/Workshop.tsx";
+import { WorkshopPilot } from "../features/WorkshopPilot.tsx";
+import "../styles/pilot.css";
 import { Showroom, VehicleEditor } from "../features/Showroom.tsx";
 import {
   Inventory,
@@ -206,6 +208,7 @@ function Application() {
   useEffect(() => {
     setMenu(false);
   }, [path]);
+  if (path === "/pilot") return <WorkshopPilot />;
   if (!user || path === "/masuk") return <Login />;
   const allowed = nav.filter((n) =>
     n.permission === "owner"
@@ -531,7 +534,8 @@ function Login() {
             </Button>
           </form>
           <p className="login-disclaimer">
-            Tanpa kredensial nyata. Autentikasi server belum terhubung.
+            Akun demo memakai data lokal di browser.
+            {" "}<a href="#/pilot">Buka pilot bengkel</a>.
           </p>
         </div>
         <footer className="login-footer">

@@ -1,0 +1,120 @@
+.pilot-page {
+  width: min(1080px, calc(100% - 32px));
+  margin-inline: auto;
+  padding-block: 24px 48px;
+}
+
+.pilot-header,
+.pilot-toolbar,
+.pilot-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-block: 12px;
+}
+
+.pilot-header,
+.pilot-row {
+  justify-content: space-between;
+}
+
+.pilot-header p {
+  margin-block: 2px 0;
+}
+
+.pilot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.pilot-form,
+.pilot-panel {
+  padding: 16px;
+  min-width: 0;
+}
+
+.pilot-form fieldset {
+  display: grid;
+  gap: 10px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.pilot-form h2,
+.pilot-panel h2 {
+  margin: 0 0 10px;
+}
+
+.pilot-form .button {
+  justify-self: start;
+}
+
+.pilot-form label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+}
+
+.pilot-form input[type="checkbox"] {
+  width: auto;
+}
+
+.pilot-line {
+  display: grid;
+  gap: 8px;
+  border-block-start: 1px solid currentColor;
+  padding-block-start: 8px;
+}
+
+.pilot-invoice {
+  overflow-wrap: anywhere;
+}
+
+.pilot-invoice table {
+  table-layout: fixed;
+  white-space: normal;
+}
+
+.pilot-invoice :is(th, td) {
+  overflow-wrap: anywhere;
+  padding: 8px 4px;
+}
+
+.pilot-invoice th:first-child {
+  width: 40%;
+}
+
+@media print {
+  @page { size: A4; }
+  body.pilot-print .pilot-page {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  body.pilot-print .pilot-page > :not(.pilot-grid),
+  body.pilot-print .pilot-grid > :not(.pilot-print-card),
+  body.pilot-print .pilot-print-card > :not(.pilot-invoice) {
+    display: none !important;
+  }
+  body.pilot-print .pilot-grid {
+    display: block;
+  }
+  body.pilot-print .pilot-print-card {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+  body.pilot-print .pilot-invoice {
+    color: #000;
+    background: #fff;
+  }
+  body.pilot-print .pilot-invoice tr {
+    break-inside: avoid;
+  }
+}

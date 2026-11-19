@@ -47,7 +47,11 @@ Pemeriksaan browser mengubah data demo di browser uji. Hasil JSON/screenshot dis
 
 Halaman Stitch yang berdekatan digabung menjadi route/tab/dialog yang nyata dan saling terhubung. Daftar route serta pemetaan desain: `../../docs/testing/FRONTEND.md`.
 
-## Batas penting
+## Pilot bengkel
+
+Pilih **Buka pilot bengkel** di layar masuk untuk mencoba alur WO dan persediaan yang terhubung ke MySQL. [Panduan pilot](../api/README.md) menjelaskan cara menyalakan API dan membuat akun uji.
+
+## Batas demo tampilan
 
 **Ini frontend demo, bukan sistem operasional produksi. Jangan memasukkan data pribadi, kredensial, atau uang nyata.**
 
